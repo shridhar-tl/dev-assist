@@ -1,0 +1,37 @@
+.page-edit-handler {
+    .edit-handler-container {
+        width: 100%;
+        min-height: calc(100vh - 200px);
+        overflow: auto;
+
+        .controls-panel {
+            min-height: calc(100vh - 200px);
+            float: left;
+            width: 340px;
+        }
+
+        .body-panel {
+            min-height: calc(100vh - 200px);
+            float: right;
+            width: calc(100% - 345px);
+        }
+    }
+}
+
+.controls-panel {
+    .draggable-list {
+        .draggable {
+            width: 100%;
+            border: 1px dashed #d5d5d5;
+            margin: 5px;
+            padding: 5px;
+            cursor: move;
+
+            span {
+                width: 100%;
+                padding: 4px;
+                display: block;
+            }
+        }
+    }
+}

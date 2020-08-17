@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { PureComponent } from 'react';
+import { HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { initStore } from './store';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import './styles/styles.scss';
+import Default from './layout/Default';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.initApp();
+  }
+
+  initApp() {
+    this.store = initStore();
+  }
+
+  render() {
+    return (
+      <HashRouter>
+        <Provider store={this.store}>
+          <Default />
+        </Provider>
+      </HashRouter>
+    );
+  }
 }
 
 export default App;

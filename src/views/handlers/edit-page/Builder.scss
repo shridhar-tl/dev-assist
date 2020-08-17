@@ -1,0 +1,42 @@
+.handler-builder {
+    width: 100%;
+    background-color: #fff;
+
+    .drop-placeholder {
+        width :100%;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        text-align: center;
+        border: 1px dashed grey;
+
+        &.non-empty {
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+        }
+
+        &.drop-enabled {
+            background-color: yellow;
+        }
+
+        &.drop-hover {
+            background-color: yellowgreen;
+        }
+
+        &.drop-disabled {
+            background-color: red;
+        }
+    }
+
+    .droppable {
+        width:100%;
+        min-width: 300px;
+    }
+
+    .draggable-panel-title {
+        display: inline-block;
+    }
+
+    .filters-group {
+        padding-left: 30px;
+    }
+}
