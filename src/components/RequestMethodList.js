@@ -9,10 +9,10 @@ export default class RequestMethodList extends PureComponent {
   selectionChanged = ({ value }) => this.props.onChange(value?.length ? value : null);
 
   render() {
-    const { value } = this.props;
+    const { value, size = 4 } = this.props;
 
     return (
-      <div className="p-col-12 p-md-6">
+      <div className={`p-md-${size}`}>
         <div className="p-inputgroup">
           <span className="p-inputgroup-addon">Request method</span>
           <MultiSelect value={value} options={HTTP_REQUEST_METHOD}

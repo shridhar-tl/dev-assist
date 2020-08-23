@@ -4,31 +4,36 @@ import HeaderFilter from './HeaderFilter';
 import QueryParamFilter from "./QueryParamFilter";
 import RequestTypeFilter from './RequestTypeFilter';
 import ScalarFieldFilter from './ScalarFieldFilter';
-import TimeRangeFilter from "./TimeRangeFilter";
+import TimeRangeFilter from './TimeRangeFilter';
+import { FilterTypes } from '../../../../common/constants';
+import filterInfo from './filterInfo';
+import './Filters.scss';
 
 export const DRAG_TYPE_FILTER = 'FILTER_TO_ADD';
 export const FILTERS_ADDED = 'FILTER';
 
+export { filterInfo };
+
 export const filtersList = [
-    { type: DRAG_TYPE_FILTER, id: 'f_grp', text: 'Filter group', itemType: FilterGroup },
-    { type: DRAG_TYPE_FILTER, id: 'hdr', text: 'Header filter', itemType: HeaderFilter },
-    { type: DRAG_TYPE_FILTER, id: 'rq_type', text: 'Request type', itemType: RequestTypeFilter },
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.FilterGroup, text: 'Filter group', itemType: FilterGroup },
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.Header, text: 'Header filter', itemType: HeaderFilter },
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.RequestType, text: 'Request type', itemType: RequestTypeFilter },
     {
-        type: DRAG_TYPE_FILTER, id: 'hostname', text: 'Host filter', itemType: ScalarFieldFilter,
+        type: DRAG_TYPE_FILTER, id: FilterTypes.HostName, text: 'Host filter', itemType: ScalarFieldFilter,
         params: { fieldName: 'Host name' }
     },
     {
-        type: DRAG_TYPE_FILTER, id: 'url', text: 'Url filter', itemType: ScalarFieldFilter,
+        type: DRAG_TYPE_FILTER, id: FilterTypes.Url, text: 'Url filter', itemType: ScalarFieldFilter,
         params: { fieldName: 'Url' }
     },
     {
-        type: DRAG_TYPE_FILTER, id: 'flt_refr_url', text: 'Referrer url filter', itemType: ScalarFieldFilter,
+        type: DRAG_TYPE_FILTER, id: FilterTypes.ReferrerUrl, text: 'Referrer url filter', itemType: ScalarFieldFilter,
         params: { fieldName: 'Referrer url' }
     },
-    { type: DRAG_TYPE_FILTER, id: 'quer_param', text: 'Query param filter', itemType: QueryParamFilter },
-    { type: DRAG_TYPE_FILTER, id: 'dayOfWeek', text: 'Day of week filter', itemType: DayOfWeekFilter },
-    { type: DRAG_TYPE_FILTER, id: 'timeOfDay', text: 'Time of day filter', itemType: TimeRangeFilter },
-    { type: DRAG_TYPE_FILTER, id: 'attachment', text: 'Attachments filter', itemType: HeaderFilter }
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.QueryParam, text: 'Query param filter', itemType: QueryParamFilter },
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.DayOfWeek, text: 'Day of week filter', itemType: DayOfWeekFilter },
+    { type: DRAG_TYPE_FILTER, id: FilterTypes.TimeOfDay, text: 'Time of day filter', itemType: TimeRangeFilter },
+    //{ type: DRAG_TYPE_FILTER, id: FilterTypes.Attachment, text: 'Attachments filter', itemType: HeaderFilter }
 ];
 
 export const filterMap = filtersList.reduce((obj, filter) => {

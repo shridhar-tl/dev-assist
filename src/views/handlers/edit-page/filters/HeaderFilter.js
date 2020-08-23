@@ -34,7 +34,7 @@ class HeaderFilter extends BaseFilter {
         const { item: { key, comparer, value } } = this.props;
 
         return (
-            <div className="inline-row">
+            <div className="p-grid">
                 <HeaderList value={key} onChange={this.keyChanged} />
                 <ComparerList value={comparer} onChange={this.comparerChanged} />
                 <UserInput value={value} onChange={this.valueChanged} />

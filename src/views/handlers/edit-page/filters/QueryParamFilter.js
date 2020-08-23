@@ -31,11 +31,11 @@ class QueryParamFilter extends BaseFilter {
     }
 
     renderFilter() {
-        const { item: { comparer, value } } = this.props;
+        const { item: { key, comparer, value } } = this.props;
 
         return (
-            <div className="inline-row">
-                <UserInput label="Param name" value={value} onChange={this.keyChanged} />
+            <div className="p-grid">
+                <UserInput label="Param name" value={key} onChange={this.keyChanged} />
                 <ComparerList value={comparer} onChange={this.comparerChanged} />
                 <UserInput value={value} onChange={this.valueChanged} />
             </div>

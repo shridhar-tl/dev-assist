@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseFilter from './BaseFilter';
-import { FILTERS_ADDED, DRAG_TYPE_FILTER } from '.';
+import { FILTERS_ADDED, DRAG_TYPE_FILTER, filterMap } from '.';
 import SortableContainer from '../../SortableContainer';
 
 const filtersDropPlaceholder = 'Drag and drop additional filters into group.';
@@ -28,7 +28,7 @@ class FilterGroup extends BaseFilter {
         const { filters } = item;
 
         return (
-            <SortableContainer containerId="filters-group-list" className="filters-group" items={filters}
+            <SortableContainer containerId="filters-group-list" className="filters-group" items={filters} mapper={filterMap}
                 itemType={FILTERS_ADDED} accepts={this.filterAccepts} placeholder={filtersDropPlaceholder} onChange={this.onChange} />
         );
     }

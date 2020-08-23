@@ -28,10 +28,14 @@ class Controls extends PureComponent {
         </Draggable>
     );
 
+    tabChanged = ({ index }) => this.props.onTabChanged(index);
+
     render() {
+        const { tabIndex } = this.props;
+
         return (
             <div className="controls-panel">
-                <TabView>
+                <TabView activeIndex={tabIndex} onTabChange={this.tabChanged}>
                     <TabPanel header="Filters">
                         <div className="draggable-list">
                             {filtersList.map(this.renderFilters)}

@@ -3,90 +3,93 @@ import React, { Component } from 'react';
 import { Dropdown } from 'primereact/components/dropdown/Dropdown';
 
 export const COMMON_HTTP_RESPONSE_HEADERS = [
-  { text: 'Access-Control-Allow-Credentials' },
-  { text: 'Access-Control-Allow-Headers' },
-  { text: 'Access-Control-Allow-Methods' },
-  { text: 'Access-Control-Allow-Origin' },
-  { text: 'Access-Control-Expose-Headers' },
-  { text: 'Access-Control-Max-Age' },
-  { text: 'Accept-Ranges' },
-  { text: 'Age' },
-  { text: 'Allow' },
-  { text: 'Alternate-Protocol' },
-  { text: 'Cache-Control' },
-  { text: 'Client-Date' },
-  { text: 'Client-Peer' },
-  { text: 'Client-Response-Num' },
-  { text: 'Connection' },
-  { text: 'Content-Disposition' },
-  { text: 'Content-Encoding' },
-  { text: 'Content-Language' },
-  { text: 'Content-Length' },
-  { text: 'Content-Location' },
-  { text: 'Content-MD5' },
-  { text: 'Content-Range' },
-  { text: 'Content-Security-Policy' },
-  { text: 'X-Content-Security-Policy' },
-  { text: 'X-WebKit-CSP' },
-  { text: 'Content-Security-Policy-Report-Only' },
-  { text: 'Content-Type' },
-  { text: 'Date' },
-  { text: 'ETag' },
-  { text: 'Expires' },
-  { text: 'HTTP' },
-  { text: 'Keep-Alive' },
-  { text: 'Last-Modified' },
-  { text: 'Link' },
-  { text: 'Location' },
-  { text: 'Pragma' },
-  { text: 'Proxy-Authenticate' },
-  { text: 'Proxy-Connection' },
-  { text: 'Refresh' },
-  { text: 'Retry-After' },
-  { text: 'Server' },
-  { text: 'Set-Cookie' },
-  { text: 'Status' },
-  { text: 'Strict-Transport-Security' },
-  { text: 'Timing-Allow-Origin' },
-  { text: 'Trailer' },
-  { text: 'Transfer-Encoding' },
-  { text: 'Upgrade' },
-  { text: 'Vary' },
-  { text: 'Via' },
-  { text: 'Warning' },
-  { text: 'WWW-Authenticate' },
-  { text: 'X-Aspnet-Version' },
-  { text: 'X-Content-Type-Options' },
-  { text: 'X-Frame-Options' },
-  { text: 'X-Permitted-Cross-Domain-Policies' },
-  { text: 'X-Pingback' },
-  { text: 'X-Powered-By' },
-  { text: 'X-Robots-Tag' },
-  { text: 'X-UA-Compatible' },
-  { text: 'X-XSS-Protection' }
+  { value: 'Access-Control-Allow-Credentials' },
+  { value: 'Access-Control-Allow-Headers' },
+  { value: 'Access-Control-Allow-Methods' },
+  { value: 'Access-Control-Allow-Origin' },
+  { value: 'Access-Control-Expose-Headers' },
+  { value: 'Access-Control-Max-Age' },
+  { value: 'Accept-Ranges' },
+  { value: 'Age' },
+  { value: 'Allow' },
+  { value: 'Alternate-Protocol' },
+  { value: 'Cache-Control' },
+  { value: 'Client-Date' },
+  { value: 'Client-Peer' },
+  { value: 'Client-Response-Num' },
+  { value: 'Connection' },
+  { value: 'Content-Disposition' },
+  { value: 'Content-Encoding' },
+  { value: 'Content-Language' },
+  { value: 'Content-Length' },
+  { value: 'Content-Location' },
+  { value: 'Content-MD5' },
+  { value: 'Content-Range' },
+  { value: 'Content-Security-Policy' },
+  { value: 'X-Content-Security-Policy' },
+  { value: 'X-WebKit-CSP' },
+  { value: 'Content-Security-Policy-Report-Only' },
+  { value: 'Content-Type' },
+  { value: 'Date' },
+  { value: 'ETag' },
+  { value: 'Expires' },
+  { value: 'HTTP' },
+  { value: 'Keep-Alive' },
+  { value: 'Last-Modified' },
+  { value: 'Link' },
+  { value: 'Location' },
+  { value: 'Pragma' },
+  { value: 'Proxy-Authenticate' },
+  { value: 'Proxy-Connection' },
+  { value: 'Refresh' },
+  { value: 'Retry-After' },
+  { value: 'Server' },
+  { value: 'Set-Cookie' },
+  { value: 'Status' },
+  { value: 'Strict-Transport-Security' },
+  { value: 'Timing-Allow-Origin' },
+  { value: 'Trailer' },
+  { value: 'Transfer-Encoding' },
+  { value: 'Upgrade' },
+  { value: 'Vary' },
+  { value: 'Via' },
+  { value: 'Warning' },
+  { value: 'WWW-Authenticate' },
+  { value: 'X-Aspnet-Version' },
+  { value: 'X-Content-Type-Options' },
+  { value: 'X-Frame-Options' },
+  { value: 'X-Permitted-Cross-Domain-Policies' },
+  { value: 'X-Pingback' },
+  { value: 'X-Powered-By' },
+  { value: 'X-Robots-Tag' },
+  { value: 'X-UA-Compatible' },
+  { value: 'X-XSS-Protection' }
 ];
 
-export const COMMON_HTTP_REQUEST_HEADERS = [
-  { text: 'Accept-Charset' },
-  { text: 'Accept-Encoding' },
-  { text: 'Accept-Language' },
-  { text: 'Authorization' },
-  { text: 'Expect' },
-  { text: 'From' },
-  { text: 'Host' },
-  { text: 'If-Match' },
-  { text: 'If-Modified-Since' },
-  { text: 'If-None-Match' },
-  { text: 'If-Range' },
-  { text: 'If-Unmodified-Since' },
-  { text: 'Max-Forwards' },
-  { text: 'Proxy-Authorization' },
-  { text: 'Range' },
-  { text: 'Referer' },
-  { text: 'TE' },
-  { text: 'User-Agent' }
-]
+COMMON_HTTP_RESPONSE_HEADERS.forEach(h => h.label = h.value);
 
+export const COMMON_HTTP_REQUEST_HEADERS = [
+  { value: 'Accept-Charset' },
+  { value: 'Accept-Encoding' },
+  { value: 'Accept-Language' },
+  { value: 'Authorization' },
+  { value: 'Expect' },
+  { value: 'From' },
+  { value: 'Host' },
+  { value: 'If-Match' },
+  { value: 'If-Modified-Since' },
+  { value: 'If-None-Match' },
+  { value: 'If-Range' },
+  { value: 'If-Unmodified-Since' },
+  { value: 'Max-Forwards' },
+  { value: 'Proxy-Authorization' },
+  { value: 'Range' },
+  { value: 'Referer' },
+  { value: 'TE' },
+  { value: 'User-Agent' }
+];
+
+COMMON_HTTP_REQUEST_HEADERS.forEach(h => h.label = h.value);
 
 export default class HeaderList extends Component {
   constructor(props) {
@@ -104,13 +107,15 @@ export default class HeaderList extends Component {
   }
 
   render() {
+    const { showResponseHeaders, size = 4 } = this.props;
+
     return (
-      <div className="p-col-12 p-md-6">
+      <div className={`p-md-${size}`}>
         <div className="p-inputgroup">
-          <span className="p-inputgroup-addon">Select Header</span>
+          <span className="p-inputgroup-addon">Header</span>
           <Dropdown editable={true} filter={true} showClear={true} value={this.state.value}
-            options={COMMON_HTTP_RESPONSE_HEADERS}
-            optionLabel="text" onChange={this.selectionChanged} style={{ width: '250px' }} placeholder="Enter the name of a header" />
+            options={showResponseHeaders ? COMMON_HTTP_RESPONSE_HEADERS : COMMON_HTTP_REQUEST_HEADERS}
+            onChange={this.selectionChanged} style={{ width: '250px' }} placeholder="Enter the name of a header" />
         </div>
       </div>
     );

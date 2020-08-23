@@ -8,70 +8,64 @@ import { InputText } from 'primereact/inputtext';
 import { Toolbar } from 'primereact/toolbar';
 import BasePage from '../BasePage';
 import * as actions from '../../store/actions/handlers';
+import './List.scss';
+
+const noHandlersMessage = 'No handlers exists. Click on "New" button to create a new handler.';
 
 class List extends BasePage {
-    state = {}
+    state = { globalFilter: '' }
 
     async componentDidMount() {
         await this.props.loadHandlersList();
     }
 
-    onSelectionChange = ({ value }) => {
-        this.setState({ selectedItems: value });
-    }
+    onSelectionChange = ({ value }) => this.setState({ selectedItems: value, selCount: value.length });
 
     filterChanged = (e) => this.setState({ globalFilter: e.target.value })
 
     createHandler = () => this.props.history.push("/handlers/create");
 
-    changeStatus({ id, enabled }) {
-        this.props.updateStatus(id, !enabled);
-    }
+    changeStatus = ({ id, enabled }) => this.props.updateStatus(id, !enabled);
 
-    editHandler(id) {
-        this.props.history.push("/handlers/edit/" + id);
-    }
+    editHandler = (id) => this.props.history.push("/handlers/edit/" + id);
 
-    deleteHandlers(items) {
-        // this.props.deleteItems(items);
-    }
+    deleteSelections = () => this.deleteHandlers(this.state.selectedItems.map(({ id }) => id));
 
-    optionsTemplate = (row, col) => {
-        return <div>
-            <Button type="button" icon="pi pi-pencil" className="p-button-success" style={{ marginRight: '.5em' }}
+    deleteHandlers = (items) => this.props.deleteHandlers(items);
+
+    statusTemplate = (row, col) => (<InputSwitch checked={row.enabled} onChange={() => this.changeStatus(row)} />);
+
+    optionsTemplate = (row, col) => (
+        <div>
+            <Button icon="pi pi-pencil" type="success" style={{ marginRight: '.5em' }}
                 onClick={() => this.editHandler(row.id)} />
-            <Button type="button" icon="pi pi-pencil" className="p-button-danger" onClick={() => this.deleteHandlers(row.id)} />
-            {/*<Button type="button" icon="fa fa-edit" />
-            <Button type="button" icon="fa fa-trash" className="ui-button-danger" />*/}
-        </div>;
-    }
-
-    statusTemplate = (row, col) => {
-        return <InputSwitch checked={row.enabled} onChange={() => this.changeStatus(row)} />;
-    }
-
+            <Button icon="fas fa-trash" type="danger" onClick={() => this.deleteHandlers(row.id)} />
+            {/*<Button icon="fa fa-edit" />
+            <Button icon="fa fa-trash" type="danger" />*/}
+        </div>
+    );
 
     renderPage() {
         const { list } = this.props;
+        const { globalFilter } = this.state;
+
+        const left = (<h3 className="handler-list-title"><i className="fa fa-random"></i> List of Handlers</h3>);
+        const right = (<>
+            <InputText type="search" onInput={this.filterChanged} placeholder="Global Search" />
+
+            <Button label="New" icon="fa fa-plus" onClick={this.createHandler} />
+            <Button icon="fas fa-sync-alt" onClick={this.loadItems} />
+            <Button icon="fa fa-trash" type="danger" onClick={this.deleteSelections} disabled={!this.state.selCount} />
+        </>);
 
         return (
             <div>
-                <Toolbar>
-                    <div className="p-toolbar-group-left">
-                        <h3><i className="fa fa-random"></i> List of Handlers</h3>
-                    </div>
-                    <div className="p-toolbar-group-right">
-                        <InputText type="search" onInput={this.filterChanged} placeholder="Global Search" />
-
-                        <Button label="New" icon="fa fa-plus" onClick={this.createHandler} />
-                        <Button icon="fa fa-refresh" onClick={this.loadItems} />
-                        <Button icon="fa fa-trash" className="ui-button-danger" onClick={this.deleteSelections} disabled={!this.state.selCount} />
-                    </div>
-                </Toolbar>
+                <Toolbar left={left} right={right} />
                 <DataTable value={list} selection={this.state.selectedItems}
+                    emptyMessage={noHandlersMessage} globalFilter={globalFilter}
                     onSelectionChange={this.onSelectionChange}>
                     <Column selectionMode="multiple" style={columnStyles.checkbox} />
-                    <Column field="name" header="Handler Name" />
+                    <Column field="name" header="Handler Name" style={columnStyles.name} />
                     <Column field="desc" header="Description" />
                     <Column body={this.statusTemplate} header="Status" style={columnStyles.status} />
                     <Column field="created" header="Created on" style={columnStyles.created} />
@@ -85,10 +79,10 @@ class List extends BasePage {
 
 const columnStyles = ({
     checkbox: { width: '40px' },
-    status: { width: '120px' },
-    created: { width: '160px' },
-    modified: { width: '160px' },
-    options: { width: '100px' },
+    status: { width: '70px' },
+    created: { width: '200px' },
+    modified: { width: '200px' },
+    options: { width: '130px' },
 });
 
 export default connect(({ handlers: { list } }) => ({ list }), actions)(List);

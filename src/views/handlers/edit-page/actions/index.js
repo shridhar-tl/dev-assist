@@ -1,34 +1,76 @@
 import array from "../../../../common/js-extn";
+import { ActionTypes } from "../../../../common/constants";
+import ModifyItems from "./ModifyItems";
 import NoValuedAction from "./NoValuedAction";
+import ProxyAction from "./ProxyAction";
+import UrlReplaceAction from "./UrlReplaceAction";
+import UserAgentAction from "./UserAgentAction";
+import { HeaderList } from "../../../../components";
 
 export const DRAG_TYPE_ACTION = 'ACTION_TO_ADD';
 export const ACTIONS_ADDED = 'ACTION';
 
 export const actionList = [
-    { type: DRAG_TYPE_ACTION, id: 'act_bl_req', text: 'Block request', itemType: NoValuedAction, group: 'Modify Request', params: { infoText: 'Blocks this request' } },
-    { type: DRAG_TYPE_ACTION, id: 'act_redr_req', text: 'Redirect request', itemType: NoValuedAction, group: 'Modify Request', params: { infoText: 'Redirect the request to given url' } },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.BlockRequest, text: 'Block request',
+        itemType: NoValuedAction, group: 'Modify Request', params: { infoText: 'Blocks this request' },
+        actionsAllowed: false,
+        //filtersAllowed: [FilterTypes.Header, FilterTypes.RequestType]
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.Redirectrequest, text: 'Redirect request',
+        itemType: UrlReplaceAction, group: 'Modify Request', params: { infoText: 'Redirect the request to given url' },
+        actionsAllowed: false
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ReplaceReferrer, text: 'Replace referrer url',
+        itemType: UrlReplaceAction, group: 'Modify Request'
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyQueryParam, text: 'Modify query param',
+        itemType: ModifyItems, group: 'Modify Request',
+        actionsAllowed: false
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyHeader, text: 'Modify Header',
+        itemType: ModifyItems, group: 'Modify Request', params: { nameControl: HeaderList }
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyUserAgent, text: 'Modify user agent',
+        itemType: UserAgentAction, group: 'Modify Request'
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyRequestCookie, text: 'Modify request cookies',
+        itemType: ModifyItems, group: 'Modify Request'
+    },
 
-    { type: DRAG_TYPE_ACTION, id: 'act_usr_agt', text: 'Modify user agent', itemType: NoValuedAction, group: 'Modify Request' },
+    {
+        type: DRAG_TYPE_ACTION, id: 'act_dumm_res', text: 'Send dummy response',
+        itemType: NoValuedAction, group: 'Modify Response', params: { infoText: 'Send a fixed response for this request' }
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyResponseCookies, text: 'Modify response cookies',
+        itemType: ModifyItems, group: 'Modify Response'
+    },
 
-    { type: DRAG_TYPE_ACTION, id: 'act_rep_host', text: 'Replace host or url', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_rep_refr', text: 'Replace Referrer url', itemType: NoValuedAction, group: 'Modify Request' },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.AddCustomScript, text: 'Add custom script',
+        itemType: NoValuedAction, group: 'Tab Actions'
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.CloseTab, text: 'Close tab',
+        itemType: NoValuedAction, group: 'Tab Actions', params: { infoText: 'Close the tab from where this request was initiated' }
+    },
 
-    { type: DRAG_TYPE_ACTION, id: 'act_add_qry', text: 'Add query param', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_mod_qry', text: 'Modify query param', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_rem_qry', text: 'Remove query param', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_add_hdr', text: 'Add Header', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_mod_hdr', text: 'Modify Header', itemType: NoValuedAction, group: 'Modify Request' },
-    { type: DRAG_TYPE_ACTION, id: 'act_rem_hdr', text: 'Remove Header', itemType: NoValuedAction, group: 'Modify Request' },
-
-    { type: DRAG_TYPE_ACTION, id: 'act_dumm_res', text: 'Send dummy response', itemType: NoValuedAction, group: 'Modify Response', params: { infoText: 'Send a fixed response for this request' } },
-    { type: DRAG_TYPE_ACTION, id: 'act_add_cok', text: 'Add cookies', itemType: NoValuedAction, group: 'Modify Response' },
-    { type: DRAG_TYPE_ACTION, id: 'act_mod_cok', text: 'Modify cookies', itemType: NoValuedAction, group: 'Modify Response' },
-    { type: DRAG_TYPE_ACTION, id: 'act_rem_cok', text: 'Remove cookies', itemType: NoValuedAction, group: 'Modify Response' },
-    { type: DRAG_TYPE_ACTION, id: 'act_cust_scr', text: 'Add custom script', itemType: NoValuedAction, group: 'Modify Response' },
-
-    { type: DRAG_TYPE_ACTION, id: 'act_noti_dflt', text: 'Show notification', itemType: NoValuedAction, group: 'Other actions' },
-    { type: DRAG_TYPE_ACTION, id: 'act_noti_cust', text: 'Custom notification', itemType: NoValuedAction, group: 'Other actions' },
-    { type: DRAG_TYPE_ACTION, id: 'act_close_tab', text: 'Close tab', itemType: NoValuedAction, group: 'Other actions', params: { infoText: 'Close the tab from where this request was initiated' } }
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ApplyProxy, text: 'Apply proxy',
+        itemType: ProxyAction, group: 'Other actions'
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ShowNoti, text: 'Show notification',
+        itemType: NoValuedAction, group: 'Other actions'
+    },
+    //{ type: DRAG_TYPE_ACTION, id: 'act_noti_cust', text: 'Custom notification', itemType: NoValuedAction, group: 'Other actions' }
 ];
 
 export const actionMap = actionList.reduce((obj, action) => {

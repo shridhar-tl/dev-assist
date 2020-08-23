@@ -2,7 +2,7 @@ import React from 'react';
 import BaseAction from './BaseAction';
 
 class NoValuedAction extends BaseAction {
-    renderActions() {
+    renderAction() {
         return (
             <div>
 

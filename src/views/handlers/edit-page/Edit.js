@@ -13,17 +13,30 @@ import * as actions from '../../../store/actions/handlers';
 import './Edit.scss';
 
 class Edit extends BasePage {
-    state = {
-        id: null,
-        name: '',
-        desc: '',
-        filters: [],
-        actions: []
+    state = this.getEmpthHandler()
+
+    getEmpthHandler() {
+        return {
+            id: null,
+            name: '',
+            desc: '',
+            filters: [],
+            actions: []
+        };
     }
 
-    itemsAdded = (filters, actions) => {
-        this.setState({ filters, actions });
+    async componentDidMount() {
+        const { getHandlerForEdit, match } = this.props;
+        const id = match?.params?.id;
+
+        if (id) {
+            const handler = await getHandlerForEdit(id);
+
+            this.setState(handler);
+        }
     }
+
+    itemsAdded = (filters, actions) => this.setState({ filters, actions });
 
     editDesc = ({ value }) => this.setState({ descEditing: value });
     setDesc = ({ currentTarget: { value } }) => this.setState({ desc: value });
@@ -31,16 +44,26 @@ class Edit extends BasePage {
     editName = ({ value }) => this.setState({ nameEditing: value });
     setName = ({ currentTarget: { value } }) => this.setState({ name: value });
 
+    navigateToListPage = () => this.props.history.push('/handlers');
+
     saveCopy = () => this.saveHandler(true);
-    saveHandler = (saveAsCopy) => {
-        const { id, name, desc, filters, actions, enabled } = this.state;
-        const newHandler = { id, name, desc, filters, actions, enabled };
+    saveHandler = async (saveAsCopy) => {
+        const { id, name, desc, filters, actions, enabled, created } = this.state;
+        const newHandler = { id, name, desc, filters, actions, enabled, created };
 
         if (!id || saveAsCopy === true) {
             delete newHandler.id;
         }
 
-        this.props.saveHandler(newHandler);
+        await this.props.saveHandler(newHandler);
+
+        this.navigateToListPage();
+    }
+
+    deleteHandler = async () => {
+        await this.props.deleteHandlers(this.state.id);
+
+        this.props.history.push('/handlers');
     }
 
     isHandlerValid() {
@@ -49,42 +72,53 @@ class Edit extends BasePage {
         return !!((name?.trim() && desc?.trim()) && (filters?.length || actions?.length));
     }
 
+    tabChanged = (tabIndex) => this.setState({ tabIndex });
+
     renderPage() {
-        const { id, name, desc, filters, actions, nameEditing, descEditing } = this.state;
+        const { id, name, desc, filters, actions, nameEditing, descEditing, tabIndex } = this.state;
         const saveDisabled = !this.isHandlerValid();
+
+        const left = (
+            <Inplace className="handler-name" active={nameEditing} onToggle={this.editName} closable={true}>
+                <InplaceDisplay>
+                    <h3 title="Click to edit the handler name">
+                        <i className="fa fa-random"></i> {name || '<<No name given>>'}
+                        <span className="fas fa-pencil-alt" />
+                    </h3>
+                </InplaceDisplay>
+                <InplaceContent>
+                    <InputText className="edit-name" placeholder="provide a handler name"
+                        autoFocus value={name} maxLength={30} onChange={this.setName} />
+                </InplaceContent>
+            </Inplace>
+        );
+
+        const right = (<>
+            <Button label="Save" icon="fa fa-folder-open" type="success" onClick={this.saveHandler} disabled={saveDisabled} />
+            <Button label="Cancel" icon="fa fa-check" type="warning" onClick={this.navigateToListPage} />
+            {!!id && <Button label="Save Copy" icon="fa fa-copy" type="primary" onClick={this.saveCopy} disabled={saveDisabled} />}
+            {!!id && <Button icon="fa fa-trash" label="Delete" type="danger" onClick={this.deleteHandler} />}
+        </>);
 
         return (
             <div className="page-edit-handler">
                 <DndProvider backend={HTML5Backend}>
-                    <Toolbar>
-                        <div className="p-toolbar-group-left">
-                            <Inplace active={nameEditing} onToggle={this.editName} closable={true}>
-                                <InplaceDisplay>
-                                    <h3><i className="fa fa-random"></i> {name || '<<No name given>>'} <span className="fa fa-edit" /></h3>
-                                </InplaceDisplay>
+                    <Toolbar left={left} right={right}>
+                        <div className="handler-desc-cntr">
+                            <Inplace className="handler-desc" active={descEditing} onToggle={this.editDesc} closable={true}>
+                                <InplaceDisplay>{desc || '<<No description provided>>'}
+                                    <span className="fas fa-pencil-alt" title="Click to edit the handler description" /></InplaceDisplay>
                                 <InplaceContent>
-                                    <InputText autoFocus value={name} maxLength={30} onChange={this.setName} />
+                                    <InputText className="edit-desc" placeholder="provide a description" autoFocus
+                                        value={desc} maxLength={150} onChange={this.setDesc} />
                                 </InplaceContent>
                             </Inplace>
-
-                            <Inplace active={descEditing} onToggle={this.editDesc} closable={true}>
-                                <InplaceDisplay>{desc || '<<No description provided>>'} <span className="fa fa-edit" /></InplaceDisplay>
-                                <InplaceContent>
-                                    <InputText autoFocus value={desc} maxLength={80} onChange={this.setDesc} />
-                                </InplaceContent>
-                            </Inplace>
-                        </div>
-                        <div className="p-toolbar-group-right">
-                            <Button label="Save" icon="fa fa-folder-open" className="ui-button-success" onClick={this.saveHandler} disabled={saveDisabled} />
-                            <Button label="Cancel" icon="fa fa-check" className="ui-button-warning" onClick={this.cancel} />
-                            {!!id && <Button label="Copy" icon="fa fa-copy" className="ui-button-primary" onClick={this.saveCopy} disabled={saveDisabled} />}
-                            {!!id && <Button icon="fa fa-trash" label="Delete" className="ui-button-danger" onClick={this.deleteHandler} />}
                         </div>
                     </Toolbar>
                     <div className="edit-handler-container">
-                        <Controls />
+                        <Controls onTabChanged={this.tabChanged} tabIndex={tabIndex} />
                         <div className="body-panel">
-                            <Builder filters={filters} actions={actions} onChange={this.itemsAdded} />
+                            <Builder tabIndex={tabIndex} filters={filters} actions={actions} onChange={this.itemsAdded} />
                         </div>
                     </div>
                 </DndProvider>

@@ -20,8 +20,8 @@ class SortableContainer extends PureComponent {
         const { id } = item;
         const { Control: ItemControl, params } = this.props.mapper[id];
 
-        return (<ItemControl key={index} index={index} item={item}
-            dragConnector={props.dropConnector} onChange={this.itemChanged} {...params} />);
+        return (<ItemControl key={index} index={index} item={item} {...params}
+            dragConnector={props.dropConnector} onChange={this.itemChanged} onRemove={this.itemRemoved} />);
     }
 
     itemChanged = (item, index) => {
@@ -30,6 +30,15 @@ class SortableContainer extends PureComponent {
 
         items = [...items];
         items[index] = item;
+
+        onChange(items);
+    }
+
+    itemRemoved = (index) => {
+        const { onChange } = this.props;
+        let { items } = this.props;
+
+        items = items.filter((_, i) => i !== index);
 
         onChange(items);
     }

@@ -5,28 +5,12 @@ const shortDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 const defaultValue = [1, 2, 3, 4, 5];
 
 class WeekDaysSelector extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = { value: props.value || defaultValue };
-    }
-
-    UNSAFE_componentWillReceiveProps(props) {
-        let { value } = props;
-        if (!value) {
-            value = value || defaultValue;
-        }
-
-        if (this.state.value !== value) {
-            this.setState({ value });
-        }
-    }
-
     getClass($index) {
-        return this.state.value.indexOf($index) > -1 ? 'day day-on' : 'day';
+        return (this.props.value || defaultValue).indexOf($index) > -1 ? 'day day-on' : 'day';
     }
 
     daySelected(index) {
-        let { value } = this.state;
+        let { value } = this.props;
         const pos = value.indexOf(index);
 
         if (pos === -1) {
@@ -37,7 +21,6 @@ class WeekDaysSelector extends PureComponent {
         }
 
         value = array(value).sortBy()();
-        this.setState({ value });
         this.props.onChange(value);
     }
 

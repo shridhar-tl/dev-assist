@@ -1,25 +1,48 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "manifest_version": 2,
+    "name": "Dev Assistant",
+    "short_name": "Dev Assist",
+    "version": "0.1",
+    "description": "Help to manage requests.",
+    "icons": {
+        "128": "icon_128.png"
     },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+    "browser_action": {
+        "default_icon": {
+            "128": "icon_128.png"
+        },
+        "default_title": "Dev Assistant",
+        "default_popup": "menu.html"
     },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "background": {
+        "scripts": [
+            "static/js/runtime-background.js",
+            "static/js/0.js",
+            "static/js/background.js"
+        ],
+        "persistent": true
+    },
+    "commands": {
+        "open-ja-dashboard": {
+            "suggested_key": {
+                "default": "Alt+D",
+                "mac": "Command+Shift+D"
+            },
+            "description": "Open Dev Assistant dashboard page"
+        }
+    },
+    "content_security_policy": "script-src 'self' ; object-src 'self';",
+    "offline_enabled": true,
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "webRequest",
+        "webRequestBlocking",
+        "tabs",
+        "proxy",
+        "http://*/",
+        "https://*/"
+    ],
+    "optional_permissions": [],
+    "author": "Shridhar"
 }

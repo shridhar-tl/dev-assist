@@ -25,7 +25,7 @@ class RequestTypeFilter extends BaseFilter {
         const { item: { verbs, initiator } } = this.props;
 
         return (
-            <div className="inline-row">
+            <div className="p-grid">
                 <RequestMethodList value={verbs} onChange={this.setRequestMethod} />
                 <InitiatorType value={initiator} onChange={this.setInitiator} />
             </div>

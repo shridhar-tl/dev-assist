@@ -25,9 +25,8 @@ class ScalarFieldFilter extends BaseFilter {
         const { item: { comparer, value }, fieldName } = this.props;
 
         return (
-            <div className="inline-row">
-                <span>{fieldName}</span>
-                <ComparerList value={comparer} onChange={this.comparerChanged} />
+            <div className="p-grid">
+                <ComparerList label={fieldName} value={comparer} onChange={this.comparerChanged} />
                 <UserInput value={value} onChange={this.valueChanged} />
             </div>
         );

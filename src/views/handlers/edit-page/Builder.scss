@@ -34,9 +34,56 @@
 
     .draggable-panel-title {
         display: inline-block;
+        width: calc(100% - 5px);
+
+        .fa-arrows-alt {
+            margin-right: 5px;
+        }
+
+        .p-checkbox {
+            margin-left: 15px;
+        }
+
+        .fa-trash {
+            color: red;
+            cursor: pointer;
+        }
+
+        .fa-exclamation-triangle {
+            margin-right: 8px;
+            color: orange;
+        }
     }
 
     .filters-group {
         padding-left: 30px;
+    }
+}
+
+.drop-item-container {
+    .header {
+        height: 42px;
+        padding-left: 15px;
+        border: 1px solid #dee2e6;
+
+        .pi {
+            font-weight: bold;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px 20px 8px 5px;
+            display: inline-block;
+        }
+
+        .info {
+            font-size: 12px;
+        }
+    }
+
+    .items-container {
+        height: calc(100vh - 206px);
+        overflow: auto;
     }
 }

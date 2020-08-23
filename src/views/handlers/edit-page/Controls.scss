@@ -1,5 +1,5 @@
 .action-group {
-    border: 1px solid grey;
+    border: 1px solid #dee2e6;
     margin-bottom: 15px;
 
     .group-title {
@@ -9,5 +9,32 @@
         background-color: #eaeaea;
         color: #796f6f;
         font-weight: bold;
+    }
+}
+
+.controls-panel {
+    .p-tabview-panels{
+        padding: 0;
+
+        .p-tabview-panel {
+            height: calc(100vh - 206px);
+            overflow-x: auto;
+        }
+    }
+
+    .draggable-list {
+        .draggable {
+            width: calc(100% - 8px);
+            border: 1px dashed #d5d5d5;
+            margin: 5px;
+            padding: 5px;
+            cursor: move;
+
+            span {
+                width: 100%;
+                padding: 4px;
+                display: block;
+            }
+        }
     }
 }

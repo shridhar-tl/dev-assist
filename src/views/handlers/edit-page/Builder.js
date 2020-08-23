@@ -24,18 +24,41 @@ class Builder extends PureComponent {
     }
 
     render() {
-        const { filters, actions } = this.props;
+        const { filters, actions, tabIndex } = this.props;
 
         return (
             <div className="handler-builder">
-                <SortableContainer containerId="filters-list" className="filters-added" items={filters}
-                    itemType={FILTERS_ADDED} accepts={filterAccepts} mapper={filterMap}
-                    placeholder={!filters?.length ? filtersDropEmptyPlaceholder : filtersDropPlaceholder}
-                    onChange={this.onFiltersChanged} />
-                <SortableContainer containerId="actions-list" className="droppable actions-added" items={actions}
-                    itemType={ACTIONS_ADDED} accepts={actionsAccepts} mapper={actionMap}
-                    placeholder={!actions?.length ? actionsDropEmptyPlaceholder : actionsDropPlaceholder}
-                    onChange={this.onActionsChanged} />
+
+                {!tabIndex && (
+                    <div className="drop-item-container">
+                        <div className="header">
+                            <span className="pi pi-filter" />
+                            <span className="title">Filters list</span>
+                            <span className="info">Drag and drop filters from left hand panel which would be used to filter the request.</span>
+                        </div>
+                        <div className="items-container">
+                            <SortableContainer containerId="filters-list" className="filters-added" items={filters}
+                                itemType={FILTERS_ADDED} accepts={filterAccepts} mapper={filterMap}
+                                placeholder={!filters?.length ? filtersDropEmptyPlaceholder : filtersDropPlaceholder}
+                                onChange={this.onFiltersChanged} />
+                        </div>
+                    </div>
+                )}
+                {tabIndex === 1 && (
+                    <div className="drop-item-container">
+                        <div className="header">
+                            <span className="pi pi-play" />
+                            <span className="title">Actions list</span>
+                            <span className="info">All the requests matching the specified filter will be applied with below actions.</span>
+                        </div>
+                        <div className="items-container">
+                            <SortableContainer containerId="actions-list" className="droppable actions-added" items={actions}
+                                itemType={ACTIONS_ADDED} accepts={actionsAccepts} mapper={actionMap}
+                                placeholder={!actions?.length ? actionsDropEmptyPlaceholder : actionsDropPlaceholder}
+                                onChange={this.onActionsChanged} />
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }

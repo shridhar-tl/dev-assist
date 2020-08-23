@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { initStore } from './store';
-import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/themes/bootstrap4-light-purple/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';

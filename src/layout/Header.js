@@ -1,49 +1,41 @@
 import React, { PureComponent } from 'react';
-import { InputText } from 'primereact/inputtext';
-import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { Menubar } from 'primereact/menubar';
 
 class Header extends PureComponent {
-
-    static defaultProps = {
-        onToggleMenu: null
-    }
-
-    static propTypes = {
-        onToggleMenu: PropTypes.func.isRequired
-    }
+    menu = [
+        {
+            label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => { }
+        },
+        {
+            label: 'Handlers', icon: 'pi pi-fw pi-globe',
+            items: [
+                { label: 'View Handlers', icon: 'pi pi-fw pi-th-large', command: () => this.props.history.push('/handlers') },
+                { label: 'New Handler', icon: 'pi pi-fw pi-file', command: () => this.props.history.push('/handlers/create') }
+            ],
+        },
+        {
+            label: 'Contribute', icon: '', items: [
+                { label: 'Donate', icon: '' },
+                { label: 'Report a bug', icon: '' },
+                { label: 'View source', icon: 'pi pi-fw pi-search' }
+            ]
+        },
+        {
+            label: 'Documentation', icon: 'pi pi-fw pi-question'
+        }
+    ];
 
     render() {
-        return (
-            <div className="layout-topbar clearfix">
-                <button className="p-link layout-menu-button" onClick={this.props.onToggleMenu}>
-                    <span className="pi pi-bars" />
-                </button>
-                <div className="layout-topbar-icons">
-                    <span className="layout-topbar-search">
-                        <InputText type="text" placeholder="Search" />
-                        <span className="layout-topbar-search-icon pi pi-search" />
-                    </span>
-                    <button className="p-link">
-                        <span className="layout-topbar-item-text">Events</span>
-                        <span className="layout-topbar-icon pi pi-calendar" />
-                        <span className="layout-topbar-badge">5</span>
-                    </button>
-                    <button className="p-link">
-                        <span className="layout-topbar-item-text">Settings</span>
-                        <span className="layout-topbar-icon pi pi-cog" />
-                    </button>
-                    <button className="p-link">
-                        <span className="layout-topbar-item-text">User</span>
-                        <span className="layout-topbar-icon pi pi-user" />
-                    </button>
-                </div>
-            </div>
+        const start = (
+            <span>Dev Assistant</span>
         );
+        const end = (
+            <span>...</span>
+        );
+
+        return (<Menubar className="layout-topbar clearfix" model={this.menu} start={start} end={end} />);
     }
 }
 
-Header.propTypes = {
-
-};
-
-export default Header;
+export default withRouter(Header);

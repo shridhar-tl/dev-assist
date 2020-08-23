@@ -1,14 +1,10 @@
 // Button styles
 button.p-button {
-    height: 27px;
-    margin: 1px 2px;
+    height: 32px;
+    margin: 1px 3px;
 
     &.p-button-icon-only {
         width: 2em;
-    }
-
-    span:nth-child(2){
-        margin-left: 5px;
     }
 
     .p-button-text {

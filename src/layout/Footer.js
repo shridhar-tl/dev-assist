@@ -4,9 +4,11 @@ class Footer extends PureComponent {
     render() {
         return (
             <div className="layout-footer">
-                <span className="footer-text" style={{ 'marginRight': '5px' }}>DevAssist</span>
+                <span className="footer-text" style={{ 'marginRight': '5px' }}>Dev Assistant v1.0</span>
                 <img src="assets/layout/images/logo.svg" alt="" width="80" />
-                <span className="footer-text" style={{ 'marginLeft': '5px' }}>Developer tools</span>
+                <div className="pull-right">
+                    <span className="footer-text" style={{ 'marginRight': '5px' }}>Copyrights &copy; 2018 - 2020</span>
+                </div>
             </div>
         );
     }

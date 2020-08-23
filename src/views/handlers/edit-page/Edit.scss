@@ -7,31 +7,43 @@
         .controls-panel {
             min-height: calc(100vh - 200px);
             float: left;
-            width: 340px;
+            width: 300px;
         }
 
         .body-panel {
             min-height: calc(100vh - 200px);
             float: right;
-            width: calc(100% - 345px);
+            width: calc(100% - 305px);
         }
+    }
+
+    .fa-pencil-alt {
+        margin-left: 5px;
     }
 }
 
-.controls-panel {
-    .draggable-list {
-        .draggable {
-            width: 100%;
-            border: 1px dashed #d5d5d5;
-            margin: 5px;
-            padding: 5px;
-            cursor: move;
+.handler-name {
+    .p-inplace-display {
+        padding: 0 !important;
+    }
 
-            span {
-                width: 100%;
-                padding: 4px;
-                display: block;
-            }
+    .edit-name {
+        width: 450px;
+        height: 34px;
+    }
+
+    h3 {
+        margin: 0
+    }
+}
+
+.handler-desc-cntr {
+    width: 100%;
+    padding-top: 10px;
+
+    .handler-desc {
+        .edit-desc {
+            width: calc(100% - 35px);
         }
     }
 }
