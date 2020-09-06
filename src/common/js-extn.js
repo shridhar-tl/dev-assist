@@ -109,6 +109,26 @@ const arrayInitFunc = (function () {
                 }
             }
             return result;
+        },
+        remove: function (clause) {
+
+        },
+        removeAll: function (clause) {
+            const arr = this;
+
+            if (typeof clause === "function") {
+                let i = arr.length;
+                while (--i) {
+                    if (clause(arr[i], i)) {
+                        arr.splice(i, 1);
+                    }
+                }
+            }
+            else if (Array.isArray(clause)) {
+                clause.forEach(function (o) { arrExtns.remove.call(arr, o); });
+            }
+
+            return arr;
         }
     };
 

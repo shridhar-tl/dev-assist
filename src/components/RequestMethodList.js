@@ -17,7 +17,7 @@ export default class RequestMethodList extends PureComponent {
           <span className="p-inputgroup-addon">Request method</span>
           <MultiSelect value={value} options={HTTP_REQUEST_METHOD}
             filter={false} placeholder="Any request methods"
-            onChange={this.selectionChanged} style={{ width: '200px' }} />
+            onChange={this.selectionChanged} />
         </div>
       </div>
     );

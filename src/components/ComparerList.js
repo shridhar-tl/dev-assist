@@ -2,26 +2,39 @@ import React, { Component } from 'react';
 import { Dropdown } from 'primereact/components/dropdown/Dropdown';
 
 const COMMON_COMPARERS = [
-  { label: 'is equal to', value: '===', allowedTo: [] },
-  { label: 'is not equal to', value: '!==', allowedTo: [] },
-  { label: 'contains', value: '%', allowedTo: ['string'], valueType: 'array' },
+  { label: 'is equal to', value: '===' },
+  { label: 'is not equal to', value: '!==' },
+  { label: 'contains', value: '%' },
+  { label: 'does not contain', value: '!%' },
   //{ label: 'is greater than', value: '>', allowedTo: ['number', 'time'] },
   //{ label: 'is greater than or equals', value: '>=', allowedTo: ['number', 'time'] },
   //{ label: 'is lesser than', value: '<', allowedTo: ['number', 'time'] },
   //{ label: 'is lesser than or equals', value: '<=', allowedTo: ['number', 'time'] },
-  { label: 'is any of', value: '[]', allowedTo: [], valueType: 'array' },
-  { label: 'contains any of', value: '[%]', allowedTo: [], valueType: 'array' },
-  { label: 'starts with', value: '~_', allowedTo: ['string'] },
-  { label: 'ends with', value: '_~', allowedTo: ['string'] },
-  { label: 'starts with any of', value: '[~_]', allowedTo: ['string'] },
-  { label: 'ends with any of', value: '[_~]', allowedTo: ['string'] },
+  { label: 'is any of', value: '[]', multiValue: true },
+  { label: 'is none of', value: '[!]', multiValue: true },
+  { label: 'contains any of', value: '[%]', multiValue: true },
+  { label: 'contains none of', value: '[!%]', multiValue: true },
+  { label: 'starts with', value: '~_' },
+  { label: 'ends with', value: '_~' },
+  { label: 'starts with any of', value: '[~_]', multiValue: true },
+  { label: 'ends with any of', value: '[_~]', multiValue: true },
   //{ label: 'is available', value: '~', allowedTo: [], noInput: true },
   //{ label: 'is not available', value: '!', allowedTo: [], noInput: true },
-  { label: 'has some value', value: '*', allowedTo: [], noInput: true },
-  { label: 'is empty', value: '-', allowedTo: [], noInput: true },
-  { label: 'matches (regex)', value: '$', allowedTo: ['string'] },
-  { label: 'matches (wildcard)', value: '$*', allowedTo: ['string'] }
+  { label: 'has some value', value: '*', noInput: true },
+  { label: 'is empty', value: '-', noInput: true },
+  { label: 'matches (regex)', value: '$' },
+  { label: 'matches (wildcard)', value: '$*' }
 ];
+
+export const comparerOptions = COMMON_COMPARERS.reduce((obj, cur) => {
+  const { value, multiValue, noInput } = cur;
+
+  if (multiValue || noInput) {
+    obj[value] = { multiValue, noInput };
+  }
+
+  return obj;
+}, {});
 
 export const comparerMap = COMMON_COMPARERS.reduce((obj, cur) => {
   obj[cur.value] = cur;
@@ -31,23 +44,17 @@ export const comparerMap = COMMON_COMPARERS.reduce((obj, cur) => {
 export class ComparerList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: props.value
-    };
     var fieldType = props.fieldType || 'string';
     this.list = COMMON_COMPARERS.filter(i => (i.allowedTo || []).length === 0 || i.allowedTo.includes(fieldType));
   }
 
-  selectionChanged = (e) => {
-    this.setState({ value: e.value })
-    this.props.onChange(e.value);
-  }
+  selectionChanged = ({ value }) => this.props.onChange(value, comparerMap[value]);
 
   render() {
-    const { label = 'Compare', size = 4 } = this.props;
+    const { label = 'Compare', size = 4, value } = this.props;
 
     let control = (
-      <Dropdown value={this.state.value} options={this.list} onChange={this.selectionChanged}
+      <Dropdown value={value} options={this.list} onChange={this.selectionChanged}
         style={{ width: '180px' }} placeholder="Choose a comparer" />
     );
 

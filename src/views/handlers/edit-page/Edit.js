@@ -1,14 +1,14 @@
 import React from 'react';
-import { Toolbar } from 'primereact/toolbar';
-import { Button } from '../../../controls';
+import { connect } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
+import { InputText } from 'primereact/inputtext';
+import { InputSwitch } from 'primereact/inputswitch';
 import BasePage from '../../BasePage';
+import { Button } from '../../../controls';
 import Controls from './Controls';
 import Builder from './Builder';
-import { InputText } from 'primereact/components/inputtext/InputText';
-import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/handlers';
 import './Edit.scss';
 
@@ -18,6 +18,7 @@ class Edit extends BasePage {
     getEmpthHandler() {
         return {
             id: null,
+            enabled: true,
             name: '',
             desc: '',
             filters: [],
@@ -36,7 +37,15 @@ class Edit extends BasePage {
         }
     }
 
-    itemsAdded = (filters, actions) => this.setState({ filters, actions });
+    enabledChanged = ({ value: enabled }) => this.setState({ enabled });
+
+    itemsAdded = (filters, actions) => {
+        const hasError = filters?.some(({ hasError }) => hasError)
+            || !actions?.length
+            || actions.some(({ hasError }) => hasError);
+
+        this.setState({ filters, actions, hasError });
+    }
 
     editDesc = ({ value }) => this.setState({ descEditing: value });
     setDesc = ({ currentTarget: { value } }) => this.setState({ desc: value });
@@ -48,11 +57,15 @@ class Edit extends BasePage {
 
     saveCopy = () => this.saveHandler(true);
     saveHandler = async (saveAsCopy) => {
-        const { id, name, desc, filters, actions, enabled, created } = this.state;
-        const newHandler = { id, name, desc, filters, actions, enabled, created };
+        const { id, name, desc, filters, actions, enabled, created, hasError } = this.state;
+        const newHandler = { id, name, desc, filters, actions, enabled, created, hasError };
 
         if (!id || saveAsCopy === true) {
             delete newHandler.id;
+        }
+
+        if (!hasError) {
+            delete newHandler.hasError;
         }
 
         await this.props.saveHandler(newHandler);
@@ -75,22 +88,21 @@ class Edit extends BasePage {
     tabChanged = (tabIndex) => this.setState({ tabIndex });
 
     renderPage() {
-        const { id, name, desc, filters, actions, nameEditing, descEditing, tabIndex } = this.state;
+        const { id, enabled, name, desc, filters, actions, nameEditing, descEditing, tabIndex } = this.state;
         const saveDisabled = !this.isHandlerValid();
 
-        const left = (
-            <Inplace className="handler-name" active={nameEditing} onToggle={this.editName} closable={true}>
-                <InplaceDisplay>
-                    <h3 title="Click to edit the handler name">
-                        <i className="fa fa-random"></i> {name || '<<No name given>>'}
-                        <span className="fas fa-pencil-alt" />
-                    </h3>
-                </InplaceDisplay>
-                <InplaceContent>
-                    <InputText className="edit-name" placeholder="provide a handler name"
-                        autoFocus value={name} maxLength={30} onChange={this.setName} />
-                </InplaceContent>
-            </Inplace>
+        const left = (<Inplace className="handler-name" active={nameEditing} onToggle={this.editName} closable={true}>
+            <InplaceDisplay>
+                <h3 title="Click to edit the handler name">
+                    <i className="fa fa-random"></i> {name || '<<No name given>>'}
+                    <span className="fas fa-pencil-alt" />
+                </h3>
+            </InplaceDisplay>
+            <InplaceContent>
+                <InputText className="edit-name" placeholder="provide a handler name"
+                    autoFocus value={name} maxLength={50} onChange={this.setName} />
+            </InplaceContent>
+        </Inplace>
         );
 
         const right = (<>
@@ -100,21 +112,38 @@ class Edit extends BasePage {
             {!!id && <Button icon="fa fa-trash" label="Delete" type="danger" onClick={this.deleteHandler} />}
         </>);
 
+        const center = (
+            <Inplace className="handler-desc pull-left" active={descEditing} onToggle={this.editDesc} closable={true}>
+                <InplaceDisplay>
+                    <span>{desc || '<<No description provided>>'}</span>
+                    <span className="fas fa-pencil-alt" title="Click to edit the handler description" />
+                </InplaceDisplay>
+                <InplaceContent>
+                    <InputText className="edit-desc" placeholder="provide a description" autoFocus
+                        value={desc} maxLength={150} onChange={this.setDesc} />
+                </InplaceContent>
+            </Inplace>
+        );
+
+        const toolbar = (
+            <div className="toolbar">
+                <div className="clearfix">
+                    <div className="pull-left">{left}</div>
+                    <div className="pull-right">{right}</div>
+                </div>
+                <div className="handler-desc-cntr clearfix">
+                    {center}
+                    <div className="pull-right">
+                        <InputSwitch checked={enabled} onChange={this.enabledChanged} />
+                    </div>
+                </div>
+            </div>
+        );
+
         return (
             <div className="page-edit-handler">
+                {toolbar}
                 <DndProvider backend={HTML5Backend}>
-                    <Toolbar left={left} right={right}>
-                        <div className="handler-desc-cntr">
-                            <Inplace className="handler-desc" active={descEditing} onToggle={this.editDesc} closable={true}>
-                                <InplaceDisplay>{desc || '<<No description provided>>'}
-                                    <span className="fas fa-pencil-alt" title="Click to edit the handler description" /></InplaceDisplay>
-                                <InplaceContent>
-                                    <InputText className="edit-desc" placeholder="provide a description" autoFocus
-                                        value={desc} maxLength={150} onChange={this.setDesc} />
-                                </InplaceContent>
-                            </Inplace>
-                        </div>
-                    </Toolbar>
                     <div className="edit-handler-container">
                         <Controls onTabChanged={this.tabChanged} tabIndex={tabIndex} />
                         <div className="body-panel">

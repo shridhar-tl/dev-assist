@@ -3,24 +3,20 @@ import BaseAction from './BaseAction';
 import { UserInput } from '../../../../components';
 
 class UserAgentAction extends BaseAction {
-    keyChanged = ({ value: key }) => {
-        const { item, index, onChange } = this.props;
-
-        onChange({ ...item, key }, index);
+    static initItem(item) {
+        item.value = navigator.userAgent;
+        return item;
     }
 
-    valueChanged = (value) => {
-        const { item, index, onChange } = this.props;
-
-        onChange({ ...item, value }, index);
-    }
+    keyChanged = ({ value: key }) => this.triggerChange({ ...this.props.item, key });
+    valueChanged = (value) => this.triggerChange({ ...this.props.item, value });
 
     renderAction() {
-        const { item: { value = "" } } = this.props;
+        const { item: { value = '' } } = this.props;
 
         return (
             <div className="p-grid">
-                <UserInput label="User agent" size={8} value={value} onChange={this.valueChanged} />
+                <UserInput label="User agent" size={12} value={value} onChange={this.valueChanged} />
             </div>
         );
     }

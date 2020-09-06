@@ -58,7 +58,7 @@ module.exports = {
   backgroundHtml: resolveApp('public/background.html'),
   menuHtml: resolveApp('public/menu.html'),
   appIndexJs: resolveModule(resolveApp, 'src/index'),
-  backgroundJs: resolveModule(resolveApp, 'src/common/background'),
+  backgroundJs: resolveModule(resolveApp, 'src/background/chrome'),
   menuJs: resolveModule(resolveApp, 'src/common/menu'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),

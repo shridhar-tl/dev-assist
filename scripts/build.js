@@ -107,13 +107,7 @@ function build(previousFileSizes) {
   let firstCompile = true;
 
   return new Promise((resolve, reject) => {
-    compiler.watch({
-      aggregateTimeout: 300,
-      poll: 1000
-    }, (err, stats) => {
-      console.log((((stats || {}).compilation || {}).errors[0] || {}).details);
-      console.log(Object.keys(((stats || {}).compilation || {}).warnings[0] || {}));
-
+    const handler = (err, stats) => {
       const result = parseCompileCallback(err, stats, previousFileSizes);
 
       if (firstCompile) {
@@ -123,7 +117,17 @@ function build(previousFileSizes) {
       else {
         result.then(handleCompilationSuccess, handleCompilationError);
       }
-    });
+    };
+
+    if (isDevBuild) {
+      compiler.watch({
+        aggregateTimeout: 300,
+        poll: 1000
+      }, handler);
+    }
+    else {
+      compiler.run(handler);
+    }
   });
 }
 

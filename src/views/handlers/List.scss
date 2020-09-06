@@ -1,3 +1,31 @@
 .handler-list-title {
     margin: 0;
 }
+
+.handler-name-col {
+    padding: 8px 1rem !important;
+
+    .handler-name {
+        color: #883cae;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .handler-name:hover {
+        color: #0388e5;
+    }
+
+    .handler-desc {
+        font-size: 14px;
+        padding-top: 5px;
+        display: block;
+    }
+}
+
+.p-highlight {
+    .handler-name-col {
+        .handler-name {
+            color: #fff;
+        }
+    }
+}

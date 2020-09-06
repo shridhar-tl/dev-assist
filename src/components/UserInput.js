@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { InputText } from 'primereact/components/inputtext/InputText';
+import { InputText } from 'primereact/inputtext';
+import { Chips } from 'primereact/chips';
 
 export default class UserInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: props.value
-    };
+  valueChanged = (e) => this.props.onChange(e.target.value);
 
-    this.valueChanged = this.valueChanged.bind(this);
-  }
-
-  valueChanged(e) {
-    this.setState({ value: e.target.value });
-    this.props.onChange(e.target.value);
-  }
+  multiValueChanged = ({ value }) => this.props.onChange(value);
 
   getInputField() {
-    switch ((this.props.inputType || '').toLowerCase()) {
+    const { multiValue, value } = this.props;
+
+    if (multiValue) {
+      return <Chips value={value || []} onChange={this.multiValueChanged} separator="," />
+    }
+    else {
+      return <InputText value={value || ''} onChange={this.valueChanged} />;
+    }
+
+    /*switch ((this.props.inputType || '').toLowerCase()) {
       case 'int':
         return <InputText keyfilter="int" value={this.state.value} onChange={this.valueChanged} />;
       case 'num':
@@ -26,7 +26,7 @@ export default class UserInput extends Component {
         return <InputText value={this.state.value} onChange={this.valueChanged} />;
       default:
         return <InputText value={this.state.value} onChange={this.valueChanged} />;
-    }
+    }*/
   }
 
   render() {

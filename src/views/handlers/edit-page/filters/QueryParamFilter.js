@@ -1,43 +1,35 @@
 import React from 'react';
 import BaseFilter from './BaseFilter';
-import { ComparerList, UserInput } from '../../../../components';
+import { ComparerList, UserInput, comparerMap } from '../../../../components';
 
 class QueryParamFilter extends BaseFilter {
-    keyChanged = (key) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
-
-        item = { ...item, key };
-
-        onChange(item, index);
+    static initItem(item) {
+        item.comparer = '===';
+        item.hasError = true;
+        return item;
     }
 
-    comparerChanged = (comparer) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
+    getErrorMessages(item) {
+        item = item || this.props.item;
 
-        item = { ...item, comparer };
+        const { key, comparer, value } = item;
 
-        onChange(item, index);
-    }
+        if (!key) {
+            return 'Param name is required and not provided';
+        }
 
-    valueChanged = (value) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
-
-        item = { ...item, value };
-
-        onChange(item, index);
+        return this.validateValueWithComparerAndGetErrorMessage(value, comparer);
     }
 
     renderFilter() {
         const { item: { key, comparer, value } } = this.props;
+        const { multiValue, noInput } = comparerMap[comparer] || '';
 
         return (
             <div className="p-grid">
                 <UserInput label="Param name" value={key} onChange={this.keyChanged} />
                 <ComparerList value={comparer} onChange={this.comparerChanged} />
-                <UserInput value={value} onChange={this.valueChanged} />
+                {!noInput && <UserInput value={value} onChange={this.valueChanged} multiValue={multiValue} />}
             </div>
         );
     }

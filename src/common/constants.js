@@ -1,4 +1,3 @@
-
 export const FilterTypes = {
     FilterGroup: 'f_grp',
     Header: 'hdr',
@@ -21,6 +20,7 @@ export const ActionTypes = {
     ModifyHeader: 'act_mod_hdr',
     ModifyRequestCookie: 'act_req_cookie',
 
+    ModifyResponseHeader: 'act_res_header',
     ModifyResponseCookies: 'act_res_cookie',
 
     AddCustomScript: 'act_cust_scr',
@@ -31,8 +31,23 @@ export const ActionTypes = {
 };
 
 export const ActionModifyItemType = {
-    AddOrModify: '',
-    Add: '',
-    Modify: '',
-    Remove: ''
+    AddOrModify: 'add-modify',
+    Add: 'add',
+    Modify: 'modify',
+    Remove: 'remove'
+};
+
+export const doubleDigitNonDomainNames = [
+    'co', 'se', 'us', 'br', 'cn',
+    'de', 'eu', 'gr', 'me', 'sa',
+    'ru', 'se', 'uk', 'us', 'za'
+];
+
+export const tripleDigitNonDomainNames = ['net', 'org', 'gov', 'com', 'gen', 'jpn'];
+
+export const Urls = {
+    IssuesList: 'https://bitbucket.org/shridhartl/dev-assist/issues',
+    Documentation: 'https://chrome.google.com/webstore/detail/dev-assistant/omjocblcimogflgejnnadnmbfmngblmd?hl=en',
+    Donate: '',
+    Sourcecode: ''
 };

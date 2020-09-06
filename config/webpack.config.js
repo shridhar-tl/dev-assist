@@ -57,6 +57,12 @@ module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
+  let sourcemapConfig = (!!shouldUseSourceMap && 'source-map');
+
+  if (process.env.BABEL_ENV = 'development') {
+    sourcemapConfig = isDebugMode ? 'cheap-module-source-map' : 'inline-source-map';
+  }
+
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
   const isEnvProductionProfile =
@@ -138,7 +144,7 @@ module.exports = function (webpackEnv) {
     },
     // Stop compilation early in production
     bail: isEnvProduction,
-    devtool: isEnvProduction ? (!!shouldUseSourceMap && 'source-map') : (isDebugMode ? 'cheap-module-source-map' : 'eval-source-map'),
+    devtool: sourcemapConfig,
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     /*

@@ -1,43 +1,35 @@
 import React from 'react';
 import BaseFilter from './BaseFilter';
-import { HeaderList, ComparerList, UserInput } from '../../../../components';
+import { HeaderList, ComparerList, UserInput, comparerOptions } from '../../../../components';
 
 class HeaderFilter extends BaseFilter {
-    keyChanged = (key) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
-
-        item = { ...item, key };
-
-        onChange(item, index);
+    static initItem(item) {
+        item.comparer = '===';
+        item.hasError = true;
+        return item;
     }
 
-    comparerChanged = (comparer) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
+    getErrorMessages(item) {
+        item = item || this.props.item;
 
-        item = { ...item, comparer };
+        const { key, comparer, value } = item;
 
-        onChange(item, index);
-    }
+        if (!key) {
+            return 'Header name is required and not provided';
+        }
 
-    valueChanged = (value) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
-
-        item = { ...item, value };
-
-        onChange(item, index);
+        return this.validateValueWithComparerAndGetErrorMessage(value, comparer);
     }
 
     renderFilter() {
         const { item: { key, comparer, value } } = this.props;
+        const { multiValue, noInput } = comparerOptions[comparer] || '';
 
         return (
             <div className="p-grid">
                 <HeaderList value={key} onChange={this.keyChanged} />
                 <ComparerList value={comparer} onChange={this.comparerChanged} />
-                <UserInput value={value} onChange={this.valueChanged} />
+                {!noInput && <UserInput value={value} onChange={this.valueChanged} multiValue={multiValue} />}
             </div>
         );
     }

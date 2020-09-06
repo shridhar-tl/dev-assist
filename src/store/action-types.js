@@ -7,5 +7,6 @@ export const Handler = {
 };
 
 export const Settings = {
-
+    UpdateSetting: 'SETTINGS.UPDATE',
+    LoadSettings: 'SETTINGS.LOAD'
 };

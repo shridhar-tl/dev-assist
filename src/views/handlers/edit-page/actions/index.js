@@ -32,7 +32,7 @@ export const actionList = [
         actionsAllowed: false
     },
     {
-        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyHeader, text: 'Modify Header',
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyHeader, text: 'Modify request header',
         itemType: ModifyItems, group: 'Modify Request', params: { nameControl: HeaderList }
     },
     {
@@ -47,6 +47,10 @@ export const actionList = [
     {
         type: DRAG_TYPE_ACTION, id: 'act_dumm_res', text: 'Send dummy response',
         itemType: NoValuedAction, group: 'Modify Response', params: { infoText: 'Send a fixed response for this request' }
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyResponseHeader, text: 'Modify response header',
+        itemType: ModifyItems, group: 'Modify Response', params: { nameControl: HeaderList }
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyResponseCookies, text: 'Modify response cookies',

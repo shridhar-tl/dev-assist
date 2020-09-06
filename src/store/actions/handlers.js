@@ -1,14 +1,14 @@
 import { Handler } from '../action-types';
+import { getObj, sendMessage } from '../helpers';
 import { handlersTable } from '../database';
 import { UUID } from '../../common/common';
-import { FilterTypes, ActionTypes } from '../../common/constants';
 
 export function saveHandler(handler) {
     return async function (dispatch) {
-        const { name, desc, filters, actions } = handler;
+        const { name, desc, filters, actions, hasError } = handler;
         let { id, enabled, created, modified } = handler;
 
-        enabled = enabled && !!actions?.length;
+        enabled = enabled && !hasError;
 
         if (!id) {
             id = UUID.generate();
@@ -24,7 +24,7 @@ export function saveHandler(handler) {
             created = new Date();
         }
 
-        handler = { id, name, desc, filters, actions, enabled, created, modified };
+        handler = { id, name, desc, filters, actions, enabled, created, modified, hasError };
         await handlersTable.put(handler);
 
         dispatch(getObj(Handler.Save, getHandlerObjectForDisplay(handler)));
@@ -44,32 +44,6 @@ export function loadHandlersList() {
     }
 }
 
-export function loadActiveHandlers() {
-    return async function (dispatch) {
-        const listFromDB = await handlersTable.toArray()
-        const list = listFromDB.filter(h => h.enabled);
-
-        const handlersUsingHeaders = list.filter(checkIfHeadersUsed);
-        const ids = handlersUsingHeaders.map(h => h.id);
-
-        const loadProxyHandler = list.some(checkIfProxyIsUsed);
-
-        const handlersNotUsingHeaders = list.filter(({ id }) => !ids.includes(id))
-
-        dispatch(getObj(Handler.SetActiveHandlers, { handlersUsingHeaders, handlersNotUsingHeaders, loadProxyHandler }));
-    }
-}
-
-function checkIfHeadersUsed({ filters, actions }) {
-    return filters.some(f => f.id === FilterTypes.Header || (f.id === FilterTypes.FilterGroup && checkIfHeadersUsed(f)))
-        ||
-        actions.some(a => a.id === ActionTypes.ModifyHeader); // If action contains header modification
-}
-
-function checkIfProxyIsUsed({ actions }) {
-    return actions.some(a => a.id === ActionTypes.ApplyProxy);
-}
-
 export function getHandlerForEdit(id) {
     return function () {
         return handlersTable.get(id);
@@ -81,6 +55,14 @@ export function updateStatus(id, enabled) {
         let handler = await handlersTable.get(id);
 
         if (handler) {
+            if (enabled) {
+                enabled = !handler.hasError;
+            }
+
+            if (handler.enabled === enabled) {
+                return;
+            }
+
             handler = { ...handler, enabled, modified: new Date() };
             await handlersTable.put(handler);
             dispatch(getObj(Handler.UpdateHandler, getHandlerObjectForDisplay(handler)));
@@ -103,16 +85,10 @@ export function deleteHandlers(ids) {
     }
 }
 
-function getObj(type, payload) { return { type, payload }; }
-
 function getHandlerObjectForDisplay({ id, name, desc, enabled, created, modified }) {
     return {
         id, name, desc, enabled,
         created: created.toLocaleString(),
         modified: modified?.toLocaleString()
     };
-}
-
-function sendMessage() {
-    window["chrome"].runtime.sendMessage({ type: 'handlerEdited' });
 }

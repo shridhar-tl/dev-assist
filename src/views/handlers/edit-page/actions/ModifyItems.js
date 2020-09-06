@@ -2,35 +2,47 @@ import React from 'react';
 import BaseAction from './BaseAction';
 import { Dropdown } from 'primereact/dropdown';
 import { UserInput } from '../../../../components';
+import { ActionModifyItemType } from '../../../../common/constants';
 
 const actionTypes = [
-    { value: 'addO-modify', label: 'Add or Modify' },
-    { value: 'add', label: 'Add if not exist' },
-    { value: 'modify', label: 'Modify if exist' },
-    { value: 'remove', label: 'Remove' }
+    { value: ActionModifyItemType.AddOrModify, label: 'Add or Modify' },
+    { value: ActionModifyItemType.Add, label: 'Add if not exist' },
+    { value: ActionModifyItemType.Modify, label: 'Modify if exist' },
+    { value: ActionModifyItemType.Remove, label: 'Remove' }
 ];
 
 class ModifyItems extends BaseAction {
     actionChanged = ({ value: type }) => {
-        const { item, index, onChange } = this.props;
+        const item = { ...this.props.item, type };
 
-        onChange({ ...item, type }, index);
+        if (type === 'remove') {
+            delete item.value;
+        }
+
+        this.triggerChange(item);
     }
 
-    keyChanged = (key) => {
-        const { item, index, onChange } = this.props;
+    keyChanged = (key) => this.triggerChange({ ...this.props.item, key });
+    valueChanged = (value) => this.triggerChange({ ...this.props.item, value });
 
-        onChange({ ...item, key }, index);
-    }
+    getErrorMessages(item) {
+        const { type, key, value } = item || this.props.item;
 
-    valueChanged = (value) => {
-        const { item, index, onChange } = this.props;
+        if (!key?.trim()) {
+            return 'Please provide the name.';
+        }
+        else if (type !== 'remove' && !value?.trim()) {
+            return 'Value is required for selected action.';
+        }
 
-        onChange({ ...item, value }, index);
+        return null;
     }
 
     renderAction() {
-        const { item: { type, key, value }, nameControl: NameControl } = this.props;
+        const {
+            item: { type, key, value },
+            nameControl: NameControl
+        } = this.props;
 
         return (
             <div className="p-grid">
@@ -44,9 +56,9 @@ class ModifyItems extends BaseAction {
 
                 {!!NameControl && (<NameControl value={key} onChange={this.keyChanged} />)}
 
-                {!NameControl && <UserInput label="Name" value={value} onChange={this.keyChanged} />}
+                {!NameControl && <UserInput label="Name" value={key} onChange={this.keyChanged} />}
 
-                <UserInput label="Value" value={value} onChange={this.valueChanged} />
+                {type !== 'remove' && <UserInput label="Value" value={value} onChange={this.valueChanged} />}
             </div>
         );
     }

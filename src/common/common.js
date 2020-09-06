@@ -1,4 +1,5 @@
 import './extensions';
+import { tripleDigitNonDomainNames, doubleDigitNonDomainNames } from './constants';
 
 export const minsPerDay = (24 * 60);
 
@@ -34,7 +35,7 @@ export const UUID = (function () {
 
 export function matchWildcard(str, rule) {
     // for this solution to work on any string, no matter what characters it has
-    var escapeRegex = (str) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    var escapeRegex = (str) => str.replace(/([.*+?^=!:${}()|[\]/\\])/g, "\\$1");
 
     // "."  => Find a single character, except newline or line terminator
     // ".*" => Matches any string that contains zero or more characters
@@ -49,4 +50,52 @@ export function matchWildcard(str, rule) {
 
     //Returns true if it finds a match, otherwise it returns false
     return regex.test(str);
+}
+
+export function getHostNameFromUrl(url) {
+    return new URL(url).hostname;
+}
+
+export function getHostInfoFromUrl(url) {
+    if (!url) { return {}; }
+
+    const urlObj = new URL(url);
+    const { host, hostname, port, protocol, pathname } = urlObj;
+
+    const result = { host, hostname, port, protocol, pathname };
+
+    const parts = hostname.split('.');
+    const partLen = parts.length;
+
+    if (partLen > 2) {
+        const secondPart = parts[partLen - 2];
+        let doubleDotted = false;
+
+        if (secondPart.length === 3) {
+            doubleDotted = tripleDigitNonDomainNames.includes(secondPart);
+        } else if (secondPart.length === 2) {
+            doubleDotted = doubleDigitNonDomainNames.includes(secondPart);
+        }
+
+        result.isDblDotExtn = doubleDotted;
+
+        const rootDomainLen = (doubleDotted ? 3 : 2);
+        const subDomainLength = partLen - rootDomainLen;
+
+        result.subdomain = parts.slice(0, subDomainLength).join('.');
+        result.root = parts.slice(subDomainLength).join('.');
+        result.extension = parts.slice(partLen - (doubleDotted ? 2 : 1)).join('.');
+    }
+    else if (partLen === 1) {
+        result.subdomain = '';
+        result.root = hostname;
+        result.extension = '';
+    }
+    else {
+        result.subdomain = '';
+        result.root = hostname;
+        result.extension = parts[partLen - 1];
+    }
+
+    return result;
 }

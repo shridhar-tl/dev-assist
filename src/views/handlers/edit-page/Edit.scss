@@ -42,8 +42,21 @@
     padding-top: 10px;
 
     .handler-desc {
+        width: calc(100% - 60px);
+
         .edit-desc {
-            width: calc(100% - 35px);
+            width: calc(100% - 45px);
+        }
+
+        span {
+            padding: 12px 0;
         }
     }
+}
+
+.toolbar {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid #dee2e6;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
 }

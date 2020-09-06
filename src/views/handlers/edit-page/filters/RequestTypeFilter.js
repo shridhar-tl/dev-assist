@@ -1,33 +1,48 @@
 import React from 'react';
 import BaseFilter from './BaseFilter';
+import { MultiSelect } from 'primereact/multiselect';
 import { RequestMethodList, InitiatorType } from '../../../../components';
 
+const DOMAIN_MATCHER = [
+    { value: 'same', label: 'Same origin' },
+    { value: 'crossorigin', label: 'Different root domain' },
+    { value: 'crosssubdomain', label: 'Different sub Domain' },
+    { value: 'noorigin', label: 'No origin' }
+];
+
 class RequestTypeFilter extends BaseFilter {
-    setRequestMethod = (verbs) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
+    setRequestMethod = (verbs) => this.triggerChange({ ...this.props.item, verbs });
+    setRequestType = (requestType) => this.triggerChange({ ...this.props.item, requestType });
+    setOriginMatch = ({ value: origin }) => this.triggerChange({ ...this.props.item, origin });
 
-        item = { ...item, verbs };
+    getErrorMessages(item) {
+        item = item || this.props.item;
 
-        onChange(item, index);
-    }
+        const { verbs, requestType, origin } = item;
 
-    setInitiator = (initiator) => {
-        const { index, onChange } = this.props;
-        let { item } = this.props;
+        if (!verbs?.length && !requestType?.length && !origin) {
+            return 'Either request method, request type or Origin should be selected';
+        }
 
-        item = { ...item, initiator };
-
-        onChange(item, index);
+        return null;
     }
 
     renderFilter() {
-        const { item: { verbs, initiator } } = this.props;
+        const { item: { verbs, requestType, origin } } = this.props;
 
         return (
             <div className="p-grid">
                 <RequestMethodList value={verbs} onChange={this.setRequestMethod} />
-                <InitiatorType value={initiator} onChange={this.setInitiator} />
+                <InitiatorType value={requestType} onChange={this.setRequestType} />
+
+                <div className="p-md-4">
+                    <div className="p-inputgroup">
+                        <span className="p-inputgroup-addon">Origin</span>
+                        <MultiSelect value={origin} options={DOMAIN_MATCHER}
+                            filter={false} placeholder="Any origin"
+                            onChange={this.setOriginMatch} />
+                    </div>
+                </div>
             </div>
         );
     }

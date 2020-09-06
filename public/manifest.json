@@ -2,24 +2,22 @@
     "manifest_version": 2,
     "name": "Dev Assistant",
     "short_name": "Dev Assist",
-    "version": "0.1",
-    "description": "Help to manage requests.",
+    "version": "0.4",
+    "description": "Helps to modify / control http(s) requests and tabs by configuring various filters and actions.",
     "icons": {
-        "128": "icon_128.png"
+        "128": "icon_128.png",
+        "32": "icon_32.png"
     },
     "browser_action": {
         "default_icon": {
-            "128": "icon_128.png"
+            "128": "icon_128.png",
+            "32": "icon_32.png"
         },
         "default_title": "Dev Assistant",
         "default_popup": "menu.html"
     },
     "background": {
-        "scripts": [
-            "static/js/runtime-background.js",
-            "static/js/0.js",
-            "static/js/background.js"
-        ],
+        "page": "background.html",
         "persistent": true
     },
     "commands": {
@@ -44,5 +42,6 @@
         "https://*/"
     ],
     "optional_permissions": [],
-    "author": "Shridhar"
+    "author": "Shridhar",
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhOvTja95b9fCAfwJETz2GVoJzHc145QqNh43MONxINO62ym+Sp0lnLoAsJsdHbabskEY5RGNt1SkgOkdBulEpo8qJk4iWSqkrbquIveZWIvR/cRMGGDJyqnh7FdQ4QRWmTW49GBkGHL8dh8xkK6oMVEfQX87mmwLSAeJ+8W12ndDgR1sCJY96bMTOvUTRIhIrtT1pJ8JWgmpmZ4WkMzCF193FRn332DSjSCxRVCDqDdcxr0jfYQk1phL6dn2/HyX80i8pVYkdRJ6lXezvG1f1SiH0McsVxD9FNdo1mEDjHB09ChnWixlpoSGBoDpIYhd9q9F+rUfh3n1ufk06LweswIDAQAB"
 }

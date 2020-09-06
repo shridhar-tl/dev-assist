@@ -13,14 +13,32 @@ class FilterGroup extends BaseFilter {
 
     static initItem(item) {
         item.filters = [];
+        item.hasError = true;
         return item;
     }
 
     onChange = (filters) => {
         let { item, onChange, index } = this.props;
-        item = { ...item, filters };
+        const hasError = filters.length < 2 || filters.some(({ hasError }) => hasError)
+
+        item = { ...item, filters, hasError };
+
+        if (!hasError) {
+            delete item.hasError;
+        }
 
         onChange(item, index);
+    }
+
+    getErrorMessages() {
+        const { item: { filters } } = this.props;
+
+        if (filters.length < 2) {
+            return 'Atleast two filters are required inside the group';
+        }
+        else {
+            return 'Some of the filters have validation issues';
+        }
     }
 
     renderFilter() {

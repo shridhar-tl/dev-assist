@@ -36,12 +36,12 @@ class Controls extends PureComponent {
         return (
             <div className="controls-panel">
                 <TabView activeIndex={tabIndex} onTabChange={this.tabChanged}>
-                    <TabPanel header="Filters">
+                    <TabPanel header="Filters" leftIcon="pi pi-filter">
                         <div className="draggable-list">
                             {filtersList.map(this.renderFilters)}
                         </div>
                     </TabPanel>
-                    <TabPanel header="Actions">
+                    <TabPanel header="Actions" leftIcon="pi pi-play">
                         <div className="draggable-list">
                             {groupedActions.map(this.renderGroup)}
                         </div>

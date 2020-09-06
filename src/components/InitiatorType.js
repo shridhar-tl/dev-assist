@@ -26,9 +26,9 @@ export default class InitiatorType extends Component {
     return (
       <div className={`p-md-${size}`}>
         <div className="p-inputgroup">
-          <span className="p-inputgroup-addon">Initiator</span>
+          <span className="p-inputgroup-addon">Request type</span>
           <MultiSelect filter={false} showClear={true} value={value} options={COMMON_REQUEST_INITIATORS}
-            onChange={this.selectionChanged} style={{ width: '180px' }} placeholder="Any initiator type" />
+            onChange={this.selectionChanged} style={{ width: '180px' }} placeholder="Any request type" />
         </div>
       </div>
     );

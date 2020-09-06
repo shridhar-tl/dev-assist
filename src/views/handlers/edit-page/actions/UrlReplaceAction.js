@@ -15,16 +15,20 @@ const URL_MATCHER = [
 ];
 
 class UrlReplaceAction extends BaseAction {
-    keyChanged = ({ value: key }) => {
-        const { item, index, onChange } = this.props;
+    keyChanged = ({ value: key }) => this.triggerChange({ ...this.props.item, key });
+    valueChanged = (value) => this.triggerChange({ ...this.props.item, value });
 
-        onChange({ ...item, key }, index);
-    }
+    getErrorMessages(item) {
+        const { key, value } = item || this.props.item;
 
-    valueChanged = (value) => {
-        const { item, index, onChange } = this.props;
+        if (!key?.trim()) {
+            return 'Please select what has to be replaced in url';
+        }
+        else if (!value?.trim()) {
+            return 'Please provide the value to be replaced with';
+        }
 
-        onChange({ ...item, value }, index);
+        return null;
     }
 
     renderAction() {
@@ -34,7 +38,7 @@ class UrlReplaceAction extends BaseAction {
             <div className="p-grid">
                 <div className="p-md-4">
                     <div className="p-inputgroup">
-                        <span className="p-inputgroup-addon">Replace</span>
+                        <span className="p-inputgroup-addon">Replace what</span>
                         <Dropdown editable={true} filter={false} showClear={true} value={key} options={URL_MATCHER}
                             onChange={this.keyChanged} style={{ width: '180px' }} placeholder="Full Url" />
                     </div>

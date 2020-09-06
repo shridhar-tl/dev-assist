@@ -37,12 +37,16 @@ class List extends BasePage {
 
     optionsTemplate = (row, col) => (
         <div>
-            <Button icon="pi pi-pencil" type="success" style={{ marginRight: '.5em' }}
-                onClick={() => this.editHandler(row.id)} />
+            <Button icon="pi pi-copy" type="primary" style={{ marginRight: '.5em' }} />
             <Button icon="fas fa-trash" type="danger" onClick={() => this.deleteHandlers(row.id)} />
-            {/*<Button icon="fa fa-edit" />
-            <Button icon="fa fa-trash" type="danger" />*/}
         </div>
+    );
+
+    handlerNameTemplate = (row, col) => (
+        <>
+            <span className="handler-name" onClick={() => this.editHandler(row.id)}>{row.name}</span>
+            <span className="handler-desc">{row.desc}</span>
+        </>
     );
 
     renderPage() {
@@ -65,11 +69,11 @@ class List extends BasePage {
                     emptyMessage={noHandlersMessage} globalFilter={globalFilter}
                     onSelectionChange={this.onSelectionChange}>
                     <Column selectionMode="multiple" style={columnStyles.checkbox} />
-                    <Column field="name" header="Handler Name" style={columnStyles.name} />
-                    <Column field="desc" header="Description" />
+                    <Column body={this.handlerNameTemplate} field="name" header="Handler"
+                        className="handler-name-col" style={columnStyles.name} />
                     <Column body={this.statusTemplate} header="Status" style={columnStyles.status} />
                     <Column field="created" header="Created on" style={columnStyles.created} />
-                    <Column field="modified" header="Modified on" style={columnStyles.modified} />
+                    <Column field="modified" header="Last Modified" style={columnStyles.modified} />
                     <Column body={this.optionsTemplate} header="Options" style={columnStyles.options} />
                 </DataTable>
             </div>
