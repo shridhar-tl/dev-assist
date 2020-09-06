@@ -1,5 +1,6 @@
 import array from "../../../../common/js-extn";
 import { ActionTypes } from "../../../../common/constants";
+import CustomScriptAction from "./CustomScriptAction";
 import ModifyItems from "./ModifyItems";
 import NoValuedAction from "./NoValuedAction";
 import ProxyAction from "./ProxyAction";
@@ -58,8 +59,12 @@ export const actionList = [
     },
 
     {
-        type: DRAG_TYPE_ACTION, id: ActionTypes.AddCustomScript, text: 'Add custom script',
-        itemType: NoValuedAction, group: 'Tab Actions'
+        type: DRAG_TYPE_ACTION, id: ActionTypes.AddCustomJS, text: 'Add custom JS',
+        itemType: CustomScriptAction, group: 'Tab Actions'
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.AddCustomCSS, text: 'Add custom CSS',
+        itemType: CustomScriptAction, group: 'Tab Actions'
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.CloseTab, text: 'Close tab',

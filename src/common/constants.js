@@ -23,7 +23,8 @@ export const ActionTypes = {
     ModifyResponseHeader: 'act_res_header',
     ModifyResponseCookies: 'act_res_cookie',
 
-    AddCustomScript: 'act_cust_scr',
+    AddCustomJS: 'act_cust_js',
+    AddCustomCSS: 'act_cust_css',
     CloseTab: 'act_close_tab',
 
     ApplyProxy: 'act_aply_prxy',

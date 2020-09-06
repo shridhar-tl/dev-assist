@@ -36,10 +36,14 @@ function getScriptForHandler({ filters, actions }) {
 
     const { mode, value } = actions[0];
 
+    return `${script}return '${getProxyConfig(mode, value)}';`;
+}
+
+export function getProxyConfig(mode, value) {
     switch (mode) {
-        case 'direct': return `${script}return 'DIRECT';`;
-        case 'fixed_servers': return `${script}return 'PROXY ${value}';`;
-        case 'system': return `${script}return 'SYSTEM';`;
+        case 'direct': return "DIRECT";
+        case 'fixed_servers': return `PROXY ${value}`;
+        case 'system': return 'SYSTEM';
     }
 }
 

@@ -17,7 +17,7 @@ export async function loadActiveHandlers(dispatch) {
 
     handlersNotUsingHeaders = handlersNotUsingHeaders.filter(({ id }) => !ids.includes(id));
 
-    const hasHandlersModifyingResponseHeaders = list.some(checkIfHandlersModifyResponseHeaders);
+    const hasHandlersModifyingResponseHeaders = list.some(checkIfResponseActionsAdded);
 
     dispatch(getObj(Handler.SetActiveHandlers, {
         handlersUsingHeaders,
@@ -28,10 +28,14 @@ export async function loadActiveHandlers(dispatch) {
     }));
 }
 
-function checkIfHandlersModifyResponseHeaders({ actions }) {
+function checkIfResponseActionsAdded({ actions }) {
     if (!actions?.length) { return false; }
 
-    return actions.some(({ id }) => id === ActionTypes.ModifyResponseHeader || id === ActionTypes.ModifyResponseCookies);
+    return actions.some(({ id }) => id === ActionTypes.ModifyResponseHeader
+        || id === ActionTypes.ModifyResponseCookies
+        || id === ActionTypes.AddCustomJS
+        || id === ActionTypes.AddCustomCSS
+    );
 }
 
 function checkIfHeadersUsed({ filters, actions }) {

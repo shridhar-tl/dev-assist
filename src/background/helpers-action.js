@@ -3,8 +3,10 @@ import array from '../common/js-extn';
 import { ActionModifyItemType, ActionTypes } from '../common/constants';
 import { getHeaderObj } from './helpers-common';
 import { getHostInfoFromUrl } from '../common/common';
+import { getProxyConfig } from './helpers-proxy';
 
 const responseActions = {};
+const proxyActions = {};
 
 export function applyActions(response, actions, request) {
     const { requestId, tabId, requestHeaders } = request;
@@ -90,6 +92,8 @@ export function applyActions(response, actions, request) {
 
             case ActionTypes.ModifyResponseHeader:
             case ActionTypes.ModifyResponseCookies:
+            case ActionTypes.AddCustomJS:
+            case ActionTypes.AddCustomCSS:
                 const responseAction = responseActions[requestId];
                 if (responseAction) {
                     responseAction.push(action);
@@ -98,15 +102,13 @@ export function applyActions(response, actions, request) {
                 }
                 break;
 
-
-            case ActionTypes.AddCustomScript: break;
-
             case ActionTypes.CloseTab:
                 chrome.tabs.remove(tabId);
                 break;
 
 
             case ActionTypes.ApplyProxy:
+                proxyActions[url] = getProxyConfig(action.mode, value);
                 break;
 
             case ActionTypes.ShowNoti: break;
@@ -142,6 +144,28 @@ export function applyResponseActions(response) {
             if (!responseHeaders) { continue; }
             output.responseHeaders = changeResponseCookie(responseHeaders, url, key, value, type);
             break;
+        }
+        else {
+            const details = {
+                [key ? 'file' : 'code']: value,
+                runAt: action.runAt || 'document_start' // this can be even document_end
+            };
+
+            const applyCustomScript = () => {
+                if (id === ActionTypes.AddCustomJS) {
+                    chrome.tabs.executeScript(response.tabId, details);
+                }
+                else {
+                    chrome.tabs.insertCSS(response.tabId, details);
+                }
+            };
+
+            if (response.type === 'main_frame') {
+                setTimeout(applyCustomScript, 200);
+            }
+            else {
+                applyCustomScript();
+            }
         }
     }
 
@@ -279,7 +303,7 @@ function changeResponseCookie(headers, url, key, newValue, actionType) {
 }
 
 function modifyCookie(headers, key, newValue) {
-    const changedValue = false;
+    let changedValue = false;
 
     for (const cookie of headers) {
         if (cookie.name.toLowerCase() !== 'set-cookie') {
