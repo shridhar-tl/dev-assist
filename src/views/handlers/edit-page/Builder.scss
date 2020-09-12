@@ -4,14 +4,14 @@
 
     .drop-placeholder {
         width :100%;
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding-top: 140px;
+        padding-bottom: 140px;
         text-align: center;
         border: 1px dashed grey;
 
         &.non-empty {
-            padding-top: 20px !important;
-            padding-bottom: 20px !important;
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
         }
 
         &.drop-enabled {
@@ -86,4 +86,8 @@
         height: calc(100vh - 206px);
         overflow: auto;
     }
+}
+
+.error-block {
+    color: #f00
 }

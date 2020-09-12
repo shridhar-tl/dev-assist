@@ -60,3 +60,9 @@
     padding: 1rem 1.25rem;
     border-radius: 4px;
 }
+
+.p-inplace-content {
+    .pi-times:before {
+        content: "\e909";
+    }
+}

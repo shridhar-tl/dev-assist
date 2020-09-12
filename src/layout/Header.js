@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import * as actions from '../store/actions/settings';
 import { Urls } from '../common/constants';
 
+const tooltipLeft = { position: 'left' };
+
 class Header extends PureComponent {
     menu = [
         /*{
@@ -45,7 +47,10 @@ class Header extends PureComponent {
         );
 
         const end = (
-            <InputSwitch checked={this.props.extensionEnabled} onChange={extensionEnabled ? disableExtension : enableExtension} />
+            <InputSwitch checked={extensionEnabled}
+                onChange={extensionEnabled ? disableExtension : enableExtension}
+                tooltip={`Click to ${extensionEnabled ? "disable" : "enable"} this extenstion`}
+                tooltipOptions={tooltipLeft} />
         );
 
         return (<Menubar className="layout-topbar clearfix" model={this.menu} start={start} end={end} />);

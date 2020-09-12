@@ -54,8 +54,8 @@ class List extends BasePage {
 
     optionsTemplate = (row, col) => (
         <div>
-            <Button icon="pi pi-copy" type="primary" style={{ marginRight: '.5em' }}
-                tooltip="Click to copy this handler" tooltipOptions={tooltipLeft} />
+            {/*<Button icon="pi pi-copy" type="primary" style={{ marginRight: '.5em' }}
+                tooltip="Click to copy this handler" tooltipOptions={tooltipLeft} />*/}
             <Button icon="fas fa-trash" type="danger" onClick={() => this.deleteHandlers(row.id)}
                 tooltip="Click to delete this handler" tooltipOptions={tooltipLeft} />
         </div>
@@ -64,7 +64,7 @@ class List extends BasePage {
     handlerNameTemplate = (row, col) => (
         <>
             <span className="handler-name" onClick={() => this.editHandler(row.id)}
-                pr-tooltip="Click to edit this Handler">{row.name}</span>
+                title="Click to edit this Handler">{row.name}</span>
             <span className="handler-desc">{row.desc}</span>
         </>
     );
