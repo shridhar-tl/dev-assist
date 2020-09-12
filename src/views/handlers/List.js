@@ -8,9 +8,14 @@ import { InputText } from 'primereact/inputtext';
 import { Toolbar } from 'primereact/toolbar';
 import BasePage from '../BasePage';
 import * as actions from '../../store/actions/handlers';
+import { confirm, hide } from '../../common/toast';
+import { ConfirmContent } from '../../components';
 import './List.scss';
 
 const noHandlersMessage = 'No handlers exists. Click on "New" button to create a new handler.';
+
+const tooltipLeft = { position: 'left' };
+const tooltipLeftOnFocus = { position: 'left', event: 'focus' };
 
 class List extends BasePage {
     state = { globalFilter: '' }
@@ -31,20 +36,35 @@ class List extends BasePage {
 
     deleteSelections = () => this.deleteHandlers(this.state.selectedItems.map(({ id }) => id));
 
-    deleteHandlers = (items) => this.props.deleteHandlers(items);
+    deleteHandlers = (items) => {
+        confirm(<ConfirmContent
+            onConfirm={() => {
+                this.props.deleteHandlers(items);
+                hide();
+            }}
+            text="Are you sure to delete?"
+            note={Array.isArray(items) ? `Confirm to delete ${items.length} handler(s)` : 'Confirm to delete selected handler'}
+        />);
+    }
 
-    statusTemplate = (row, col) => (<InputSwitch checked={row.enabled} onChange={() => this.changeStatus(row)} />);
+    statusTemplate = (row, col) => (<InputSwitch checked={row.enabled}
+        onChange={() => this.changeStatus(row)}
+        tooltip={`Click to ${row.enabled ? "disable" : "enable"} this handler`}
+        tooltipOptions={tooltipLeft} />);
 
     optionsTemplate = (row, col) => (
         <div>
-            <Button icon="pi pi-copy" type="primary" style={{ marginRight: '.5em' }} />
-            <Button icon="fas fa-trash" type="danger" onClick={() => this.deleteHandlers(row.id)} />
+            <Button icon="pi pi-copy" type="primary" style={{ marginRight: '.5em' }}
+                tooltip="Click to copy this handler" tooltipOptions={tooltipLeft} />
+            <Button icon="fas fa-trash" type="danger" onClick={() => this.deleteHandlers(row.id)}
+                tooltip="Click to delete this handler" tooltipOptions={tooltipLeft} />
         </div>
     );
 
     handlerNameTemplate = (row, col) => (
         <>
-            <span className="handler-name" onClick={() => this.editHandler(row.id)}>{row.name}</span>
+            <span className="handler-name" onClick={() => this.editHandler(row.id)}
+                pr-tooltip="Click to edit this Handler">{row.name}</span>
             <span className="handler-desc">{row.desc}</span>
         </>
     );
@@ -55,11 +75,14 @@ class List extends BasePage {
 
         const left = (<h3 className="handler-list-title"><i className="fa fa-random"></i> List of Handlers</h3>);
         const right = (<>
-            <InputText type="search" onInput={this.filterChanged} placeholder="Global Search" />
+            <InputText type="search" onInput={this.filterChanged} placeholder="Global Search"
+                tooltip="Type to filter handler" tooltipOptions={tooltipLeftOnFocus} />
 
-            <Button label="New" icon="fa fa-plus" onClick={this.createHandler} />
+            <Button label="New" icon="fa fa-plus" onClick={this.createHandler}
+                tooltip="Click to create new handler" tooltipOptions={tooltipLeft} />
             <Button icon="fas fa-sync-alt" onClick={this.loadItems} />
-            <Button icon="fa fa-trash" type="danger" onClick={this.deleteSelections} disabled={!this.state.selCount} />
+            <Button icon="fa fa-trash" type="danger" onClick={this.deleteSelections} disabled={!this.state.selCount}
+                tooltip="Click to delete selected handlers" tooltipOptions={tooltipLeft} />
         </>);
 
         return (
@@ -69,12 +92,12 @@ class List extends BasePage {
                     emptyMessage={noHandlersMessage} globalFilter={globalFilter}
                     onSelectionChange={this.onSelectionChange}>
                     <Column selectionMode="multiple" style={columnStyles.checkbox} />
-                    <Column body={this.handlerNameTemplate} field="name" header="Handler"
+                    <Column field="name" body={this.handlerNameTemplate} header="Handler"
                         className="handler-name-col" style={columnStyles.name} />
                     <Column body={this.statusTemplate} header="Status" style={columnStyles.status} />
                     <Column field="created" header="Created on" style={columnStyles.created} />
                     <Column field="modified" header="Last Modified" style={columnStyles.modified} />
-                    <Column body={this.optionsTemplate} header="Options" style={columnStyles.options} />
+                    <Column field="desc" body={this.optionsTemplate} header="Options" style={columnStyles.options} />
                 </DataTable>
             </div>
         );

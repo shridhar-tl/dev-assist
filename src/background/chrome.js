@@ -4,6 +4,7 @@ import { canProcessRequest } from './helpers-handler';
 import { filterHandlersForRequest } from './helpers-filter';
 import { applyActions, applyResponseActions } from './helpers-action';
 import { getPACScript } from './helpers-proxy';
+import { Settings } from '../common/constants';
 
 console.log('Background script started');
 
@@ -18,24 +19,30 @@ chrome.runtime.onMessage.addListener(function ({ type }, callback) {
     }
 });
 
+let isHandlersEnabled = false;
+
 store.subscribe(checkStoreAndInitListener);
 
 function checkStoreAndInitListener() {
     console.log('About to init listener');
-    initBeforeRequestHandler();
-    initBeforeSendHeaderHandler();
-    initHeadersReceivedHandler();
-    initProxyHandler();
+    const { handlers, settings: { [Settings.ExtensionEnabled]: isEnabled } } = store.getState();
+    isHandlersEnabled = isEnabled;
 
-    const count = getEnabledCount();
-    chrome.browserAction.setBadgeText({ text: count > 0 ? count.toString() : '' });
+    initBeforeRequestHandler(handlers);
+    initBeforeSendHeaderHandler(handlers);
+    initHeadersReceivedHandler(handlers);
+    initProxyHandler(handlers);
+
+    const count = isEnabled && getEnabledCount();
+    chrome.browserAction.setBadgeText({ text: count > 0 ? count.toString() : (isEnabled ? 'ON' : 'OFF') });
+    chrome.browserAction.setBadgeBackgroundColor({ color: count > 0 ? '#00FF00' : (isEnabled ? '#ffc107' : '#dc3545') });
 }
 
-function initBeforeRequestHandler() {
-    const hasHandlersWithoutUsingHeaders = store.getState().handlers?.handlersNotUsingHeaders?.length > 0;
+function initBeforeRequestHandler(handlers) {
+    const hasHandlersWithoutUsingHeaders = handlers.handlersNotUsingHeaders?.length > 0;
     const hasListener = chrome.webRequest.onBeforeRequest.hasListeners();
 
-    if (hasHandlersWithoutUsingHeaders) {
+    if (hasHandlersWithoutUsingHeaders && isHandlersEnabled) {
         if (!hasListener) {
             chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest,
                 { urls: ['<all_urls>'] }, ['blocking', 'extraHeaders', 'requestBody']);
@@ -50,11 +57,11 @@ function initBeforeRequestHandler() {
     }
 }
 
-function initBeforeSendHeaderHandler() {
-    const hasFiltersWithHeaders = store.getState().handlers?.handlersUsingHeaders?.length > 0;
+function initBeforeSendHeaderHandler(handlers) {
+    const hasFiltersWithHeaders = handlers.handlersUsingHeaders?.length > 0;
     const hasListener = chrome.webRequest.onBeforeSendHeaders.hasListeners();
 
-    if (hasFiltersWithHeaders) {
+    if (hasFiltersWithHeaders && isHandlersEnabled) {
         if (!hasListener) {
             // Filter out things which have headers
             chrome.webRequest.onBeforeSendHeaders.addListener(onBeforeSendHeaders,
@@ -71,8 +78,8 @@ function initBeforeSendHeaderHandler() {
 }
 
 let attached_proxy = false;
-function initProxyHandler() {
-    const handlersForProxyOnly = store.getState().handlers?.handlersForProxyOnly;
+function initProxyHandler(handlers) {
+    const handlersForProxyOnly = handlers.handlersForProxyOnly;
 
     if (attached_proxy) {
         chrome.proxy.settings.clear({ scope: 'regular' });
@@ -80,7 +87,7 @@ function initProxyHandler() {
         attached_proxy = true;
     }
 
-    if (!handlersForProxyOnly?.length) {
+    if (!handlersForProxyOnly?.length || isHandlersEnabled) {
         return;
     }
 
@@ -103,7 +110,7 @@ function initProxyHandler() {
 function initHeadersReceivedHandler() {
     const hasListener = chrome.webRequest.onHeadersReceived.hasListeners();
 
-    if (shouldAtachResponseHandler()) {
+    if (shouldAtachResponseHandler() && isHandlersEnabled) {
         if (!hasListener) {
             chrome.webRequest.onHeadersReceived.addListener(onHeadersReceived,
                 { urls: ['<all_urls>'] }, ['blocking', 'extraHeaders', 'responseHeaders']);

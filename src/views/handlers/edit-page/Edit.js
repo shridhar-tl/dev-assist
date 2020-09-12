@@ -11,6 +11,8 @@ import Controls from './Controls';
 import Builder from './Builder';
 import * as actions from '../../../store/actions/handlers';
 import './Edit.scss';
+import { confirm, hide } from '../../../common/toast';
+import { ConfirmContent } from '../../../components';
 
 class Edit extends BasePage {
     state = this.getEmpthHandler()
@@ -73,7 +75,16 @@ class Edit extends BasePage {
         this.navigateToListPage();
     }
 
+    confirmDelete = () => {
+        confirm(<ConfirmContent
+            onConfirm={this.deleteHandler}
+            text="Are you sure to delete?"
+            note="Confirm to delete this handler"
+        />);
+    }
+
     deleteHandler = async () => {
+        hide();
         await this.props.deleteHandlers(this.state.id);
 
         this.props.history.push('/handlers');
@@ -109,7 +120,7 @@ class Edit extends BasePage {
             <Button label="Save" icon="fa fa-folder-open" type="success" onClick={this.saveHandler} disabled={saveDisabled} />
             <Button label="Cancel" icon="fa fa-check" type="warning" onClick={this.navigateToListPage} />
             {!!id && <Button label="Save Copy" icon="fa fa-copy" type="primary" onClick={this.saveCopy} disabled={saveDisabled} />}
-            {!!id && <Button icon="fa fa-trash" label="Delete" type="danger" onClick={this.deleteHandler} />}
+            {!!id && <Button icon="fa fa-trash" label="Delete" type="danger" onClick={this.confirmDelete} />}
         </>);
 
         const center = (

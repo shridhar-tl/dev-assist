@@ -13,14 +13,14 @@ const buttonTypes = {
 
 class Button extends PureComponent {
     render() {
-        const { type, label, isLoading, icon, onClick, disabled, title, style } = this.props;
+        const { type, label, isLoading, icon, onClick, disabled, tooltip, tooltipOptions, style } = this.props;
         let { className } = this.props;
 
         let btnClass = buttonTypes[type] || "";
 
         className = className || "";
 
-        const props = { label, icon, onClick, disabled, title, style, className: `${btnClass} ${className}` };
+        const props = { label, icon, onClick, disabled, tooltip, tooltipOptions, style, className: `${btnClass} ${className}` };
 
         if (isLoading) {
             props.icon = "fa fa-spinner fa-spin";

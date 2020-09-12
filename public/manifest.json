@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Dev Assistant",
     "short_name": "Dev Assist",
-    "version": "0.4",
+    "version": "0.5",
     "description": "Helps to modify / control http(s) requests and tabs by configuring various filters and actions.",
     "icons": {
         "128": "icon_128.png",
@@ -29,7 +29,7 @@
             "description": "Open Dev Assistant dashboard page"
         }
     },
-    "content_security_policy": "script-src 'self' ; object-src 'self';",
+    "content_security_policy": "script-src 'self' ; object-src 'self'; img-src 'self';",
     "offline_enabled": true,
     "permissions": [
         "storage",

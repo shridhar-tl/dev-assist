@@ -31,6 +31,10 @@ export const ActionTypes = {
     ShowNoti: 'act_noti_dflt'
 };
 
+export const Settings = {
+    ExtensionEnabled: 'extensionEnabled'
+};
+
 export const ActionModifyItemType = {
     AddOrModify: 'add-modify',
     Add: 'add',
@@ -49,6 +53,6 @@ export const tripleDigitNonDomainNames = ['net', 'org', 'gov', 'com', 'gen', 'jp
 export const Urls = {
     IssuesList: 'https://bitbucket.org/shridhartl/dev-assist/issues',
     Documentation: 'https://chrome.google.com/webstore/detail/dev-assistant/omjocblcimogflgejnnadnmbfmngblmd?hl=en',
-    Donate: '',
-    Sourcecode: ''
+    Donate: 'https://www.paypal.com/paypalme/shridhartl',
+    Sourcecode: 'https://github.com/shridhar-tl/dev-assist'
 };

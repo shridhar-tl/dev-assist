@@ -2,10 +2,7 @@
 import { Settings as actions } from '../action-types';
 import { getObj, sendMessage } from '../helpers';
 import { settingsTable } from '../database';
-
-const Settings = {
-    ExtensionEnabled: 'extensionEnabled'
-};
+import { Settings } from '../../common/constants';
 
 export function enableExtension() {
     return async function (dispatch) {
