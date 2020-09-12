@@ -6,7 +6,8 @@ class SortableContainer extends PureComponent {
         const { onChange } = this.props;
         let { items } = this.props;
 
-        const { index, item: { id, itemType } } = source;
+        const { item: { id, itemType } } = source;
+        const { index } = target;
 
         const newItem = itemType.initItem({ id });
 
