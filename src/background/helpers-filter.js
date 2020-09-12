@@ -88,6 +88,12 @@ export function filterHandlersForRequest(request, list) {
                         isEligible = assertValue(hostName, value, comparer);
                         break;
 
+                    case FilterTypes.Initiator:
+                        const initiatorHostName = getHostNameFromUrl(initiator);
+
+                        isEligible = assertValue(initiatorHostName, value, comparer);
+                        break;
+
                     case FilterTypes.Url:
                         isEligible = assertValue(url, value, comparer);
                         break;

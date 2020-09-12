@@ -45,10 +45,11 @@ export const actionList = [
         itemType: ModifyItems, group: 'Modify Request'
     },
 
+    /*
     {
         type: DRAG_TYPE_ACTION, id: 'act_dumm_res', text: 'Send dummy response',
         itemType: NoValuedAction, group: 'Modify Response', params: { infoText: 'Send a fixed response for this request' }
-    },
+    },*/
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyResponseHeader, text: 'Modify response header',
         itemType: ModifyItems, group: 'Modify Response', params: { nameControl: HeaderList }
@@ -75,11 +76,11 @@ export const actionList = [
         type: DRAG_TYPE_ACTION, id: ActionTypes.ApplyProxy, text: 'Apply proxy',
         itemType: ProxyAction, group: 'Other actions'
     },
-    {
+    /*{
         type: DRAG_TYPE_ACTION, id: ActionTypes.ShowNoti, text: 'Show notification',
         itemType: NoValuedAction, group: 'Other actions'
     },
-    //{ type: DRAG_TYPE_ACTION, id: 'act_noti_cust', text: 'Custom notification', itemType: NoValuedAction, group: 'Other actions' }
+    { type: DRAG_TYPE_ACTION, id: 'act_noti_cust', text: 'Custom notification', itemType: NoValuedAction, group: 'Other actions' }*/
 ];
 
 export const actionMap = actionList.reduce((obj, action) => {

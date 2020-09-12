@@ -23,6 +23,10 @@ export const filtersList = [
         params: { fieldName: 'Host name' }
     },
     {
+        type: DRAG_TYPE_FILTER, id: FilterTypes.Initiator, text: 'Initiator host filter', itemType: ScalarFieldFilter,
+        params: { fieldName: 'Initiator host' }
+    },
+    {
         type: DRAG_TYPE_FILTER, id: FilterTypes.Url, text: 'Url filter', itemType: ScalarFieldFilter,
         params: { fieldName: 'Url' }
     },

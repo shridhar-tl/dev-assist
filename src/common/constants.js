@@ -3,6 +3,7 @@ export const FilterTypes = {
     Header: 'hdr',
     RequestType: 'rq_type',
     HostName: 'hostname',
+    Initiator: 'initiator',
     Url: 'url',
     ReferrerUrl: 'flt_refr_url',
     QueryParam: 'quer_param',

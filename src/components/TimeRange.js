@@ -18,7 +18,7 @@ class TimeRange extends PureComponent {
 
         return (
             <div>
-                <span>Selected Range: {this.getHour(value[0])} - {this.getHour(value[1])}</span>
+                <span className="range-value">Selected Range: {this.getHour(value[0])} - {this.getHour(value[1])}</span>
                 <Slider range={true} value={value} min={0} max={max} step={5} onChange={this.rangeChanged} />
             </div>
         );

@@ -21,9 +21,14 @@ div.daysinweek {
 
 // Styles related to ConfirmContent.js
 .flex-1 {
-    flex: 1
+  flex: 1
 }
 
 .font-big {
-    font-size: 3rem
+  font-size: 3rem
+}
+
+.range-value {
+  margin-bottom: 8px;
+  display: block;
 }
