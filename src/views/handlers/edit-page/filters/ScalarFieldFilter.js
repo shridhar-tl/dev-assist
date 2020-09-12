@@ -24,7 +24,7 @@ class ScalarFieldFilter extends BaseFilter {
         return (
             <div className="p-grid">
                 <ComparerList label={fieldName} value={comparer} onChange={this.comparerChanged} />
-                {!noInput && <UserInput value={value} onChange={this.valueChanged} multiValue={multiValue} />}
+                {!noInput && <UserInput size={8} value={value} onChange={this.valueChanged} multiValue={multiValue} />}
             </div>
         );
     }

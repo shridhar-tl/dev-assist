@@ -161,7 +161,7 @@ export function applyResponseActions(response) {
             };
 
             if (response.type === 'main_frame') {
-                setTimeout(applyCustomScript, 200);
+                setTimeout(applyCustomScript, 500);
             }
             else {
                 applyCustomScript();
