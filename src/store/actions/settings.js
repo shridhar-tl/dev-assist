@@ -1,4 +1,4 @@
-
+/* global chrome */
 import { Settings as actions } from '../action-types';
 import { getObj, sendMessage } from '../helpers';
 import { settingsTable } from '../database';
@@ -25,12 +25,21 @@ async function updateStore(dispatch, key, value) {
 
 export function loadSettings() {
     return async function (dispatch) {
+        const browserSettings = await getBrowserSettings();
         const settingsFromDB = (await settingsTable.toArray()).reduce((set, cur) => {
             set[cur.id] = cur.value;
 
             return set;
-        }, {});
+        }, browserSettings);
 
         dispatch(getObj(actions.LoadSettings, settingsFromDB));
     }
+}
+
+function getBrowserSettings() {
+    return new Promise(function (resolve) {
+        chrome.extension.isAllowedIncognitoAccess(function (allowed) {
+            resolve({ isAllowedIncognitoAccess: allowed });
+        });
+    });
 }

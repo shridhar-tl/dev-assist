@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Menubar } from 'primereact/menubar';
 import { InputSwitch } from 'primereact/inputswitch';
-import { connect } from 'react-redux';
+import { Tooltip } from 'primereact/tooltip';
 import * as actions from '../store/actions/settings';
 import { Urls } from '../common/constants';
 
@@ -37,7 +38,7 @@ class Header extends PureComponent {
     }
 
     render() {
-        const { extensionEnabled, enableExtension, disableExtension } = this.props;
+        const { extensionEnabled, enableExtension, disableExtension, isAllowedIncognitoAccess } = this.props;
 
         const start = (
             <>
@@ -47,16 +48,22 @@ class Header extends PureComponent {
         );
 
         const end = (
-            <InputSwitch checked={extensionEnabled}
-                onChange={extensionEnabled ? disableExtension : enableExtension}
-                tooltip={`Click to ${extensionEnabled ? "disable" : "enable"} this extenstion`}
-                tooltipOptions={tooltipLeft} />
+            <>
+                {!isAllowedIncognitoAccess && <>
+                    <Tooltip target=".incognito-error" position="left" />
+                    <span className="pi pi-exclamation-triangle incognito-error" data-pr-tooltip="Incognito access not provided" />
+                </>}
+                <InputSwitch checked={extensionEnabled}
+                    onChange={extensionEnabled ? disableExtension : enableExtension}
+                    tooltip={`Click to ${extensionEnabled ? "disable" : "enable"} this extenstion`}
+                    tooltipOptions={tooltipLeft} />
+            </>
         );
 
         return (<Menubar className="layout-topbar clearfix" model={this.menu} start={start} end={end} />);
     }
 }
 
-export default connect(({ settings: { extensionEnabled } }) => {
-    return { extensionEnabled };
+export default connect(({ settings: { extensionEnabled, isAllowedIncognitoAccess } }) => {
+    return { extensionEnabled, isAllowedIncognitoAccess };
 }, actions)(withRouter(Header));
