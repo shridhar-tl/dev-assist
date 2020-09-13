@@ -25,9 +25,12 @@ class SortableContainer extends PureComponent {
             dragConnector={props.dropConnector} onChange={this.itemChanged} onRemove={this.itemRemoved} />);
     }
 
-    itemChanged = (item, index) => {
+    itemChanged = (item, i, oldItem) => {
         const { onChange } = this.props;
         let { items } = this.props;
+
+        let index = items.indexOf(oldItem);
+        if (!~index) { index = i; }
 
         items = [...items];
         items[index] = item;

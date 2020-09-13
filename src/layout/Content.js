@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Route } from 'react-router-dom';
 import List from '../views/handlers/List';
 import Edit from '../views/handlers/edit-page/Edit';
+import { ImportHandlers } from '../components';
 
 class Content extends PureComponent {
     render() {
@@ -21,7 +22,8 @@ class Content extends PureComponent {
                 <Route path="/charts" component={ChartsDemo} />
                 <Route path="/misc" component={MiscDemo} />
                 <Route path="/empty" component={EmptyPage} />
-        <Route path="/documentation" component={Documentation} />*/}
+                <Route path="/documentation" component={Documentation} />*/}
+                <ImportHandlers />
             </div>
         );
     }

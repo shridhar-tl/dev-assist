@@ -6,6 +6,7 @@ import { Button } from '../../controls';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
 import { Toolbar } from 'primereact/toolbar';
+import { FileUpload } from 'primereact/fileupload';
 import BasePage from '../BasePage';
 import * as actions from '../../store/actions/handlers';
 import { confirm, hide } from '../../common/toast';
@@ -24,7 +25,7 @@ class List extends BasePage {
         await this.props.loadHandlersList();
     }
 
-    onSelectionChange = ({ value }) => this.setState({ selectedItems: value, selCount: value.length });
+    onSelectionChange = ({ value }) => this.setState({ selectedItems: value, selCount: value?.length || null });
 
     filterChanged = (e) => this.setState({ globalFilter: e.target.value })
 
@@ -34,12 +35,15 @@ class List extends BasePage {
 
     editHandler = (id) => this.props.history.push("/handlers/edit/" + id);
 
-    deleteSelections = () => this.deleteHandlers(this.state.selectedItems.map(({ id }) => id));
+    deleteSelections = () => this.deleteHandlers(this.getSelectedItems());
+
+    getSelectedItems = () => this.state.selectedItems.map(({ id }) => id);
 
     deleteHandlers = (items) => {
         confirm(<ConfirmContent
             onConfirm={() => {
                 this.props.deleteHandlers(items);
+                this.onSelectionChange({ value: null });
                 hide();
             }}
             text="Are you sure to delete?"
@@ -63,15 +67,31 @@ class List extends BasePage {
 
     handlerNameTemplate = (row, col) => (
         <>
-            <span className="handler-name" onClick={() => this.editHandler(row.id)}
+            <span className="handler-name clickable" onClick={() => this.editHandler(row.id)}
                 title="Click to edit this Handler">{row.name}</span>
             <span className="handler-desc">{row.desc}</span>
         </>
     );
 
+    downloadSelection = () => {
+        this.props.downloadHandlers(this.getSelectedItems());
+        this.onSelectionChange({ value: null });
+    }
+
+    onFileSelected = ({ files: [file] }) => {
+        const reader = new FileReader();
+        reader.onload = ({ target: { result } = {} }) => {
+            this.fileUploader.clear();
+            this.props.importHandlers(result);
+        };
+        reader.readAsBinaryString(file);
+    }
+
+    setUploader = (e) => this.fileUploader = e;
+
     renderPage() {
         const { list } = this.props;
-        const { globalFilter } = this.state;
+        const { globalFilter, selCount } = this.state;
 
         const left = (<h3 className="handler-list-title"><i className="fa fa-random"></i> List of Handlers</h3>);
         const right = (<>
@@ -79,9 +99,15 @@ class List extends BasePage {
                 tooltip="Type to filter handler" tooltipOptions={tooltipLeftOnFocus} />
 
             <Button label="New" icon="fa fa-plus" onClick={this.createHandler}
-                tooltip="Click to create new handler" tooltipOptions={tooltipLeft} />
-            <Button icon="fas fa-sync-alt" onClick={this.loadItems} />
-            <Button icon="fa fa-trash" type="danger" onClick={this.deleteSelections} disabled={!this.state.selCount}
+                type="success" tooltip="Click to create new handler" tooltipOptions={tooltipLeft} />
+            <FileUpload ref={this.setUploader} mode="basic" accept="*.dah" maxFileSize={30000} customUpload={true}
+                chooseLabel="Import" onSelect={this.onFileSelected}
+                tooltip="Choose file to import handlers" tooltipOptions={tooltipLeft} />
+            <Button icon="pi pi-download" onClick={this.downloadSelection} disabled={!selCount}
+                tooltip="Export selected handlers" tooltipOptions={tooltipLeft} />
+            <Button icon="fas fa-sync-alt" onClick={this.loadItems}
+                tooltip="Refresh handlers list" tooltipOptions={tooltipLeft} />
+            <Button icon="fa fa-trash" type="danger" onClick={this.deleteSelections} disabled={!selCount}
                 tooltip="Click to delete selected handlers" tooltipOptions={tooltipLeft} />
         </>);
 

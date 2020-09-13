@@ -41,7 +41,7 @@ function checkIfHeadersUsed({ filters, actions }) {
         || f.id === FilterTypes.ReferrerUrl
         || (f.id === FilterTypes.FilterGroup && checkIfHeadersUsed(f)))
         ||
-        actions.some(a => a.id === ActionTypes.ModifyHeader
+        actions?.some(a => a.id === ActionTypes.ModifyHeader
             || a.id === ActionTypes.ModifyUserAgent
             || a.id === ActionTypes.ReplaceReferrer
             || a.id === ActionTypes.ModifyRequestCookie

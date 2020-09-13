@@ -1,6 +1,7 @@
 import ComparerList, { comparerOptions, comparerMap } from './ComparerList';
 import ConfirmContent from './ConfirmContent';
 import HeaderList from './HeaderList';
+import ImportHandlers from './ImportHandlers';
 import InitiatorType from './InitiatorType';
 import OriginTypeList from './OriginTypeList';
 import ProtocolList from './ProtocolList';
@@ -11,6 +12,6 @@ import WeekDaysSelector from './WeekDaysSelector';
 import './Common.scss';
 
 export {
-    ComparerList, ConfirmContent, HeaderList, InitiatorType, OriginTypeList, ProtocolList,
+    ComparerList, ConfirmContent, HeaderList, ImportHandlers, InitiatorType, OriginTypeList, ProtocolList,
     RequestMethodList, TimeRange, UserInput, WeekDaysSelector, comparerOptions, comparerMap
 };

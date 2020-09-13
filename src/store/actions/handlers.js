@@ -2,6 +2,7 @@ import { Handler } from '../action-types';
 import { getObj, sendMessage } from '../helpers';
 import { handlersTable } from '../database';
 import { UUID } from '../../common/common';
+import { saveAs } from '../../common/utils';
 
 export function saveHandler(handler) {
     return async function (dispatch) {
@@ -91,4 +92,111 @@ function getHandlerObjectForDisplay({ id, name, desc, enabled, created, modified
         created: created.toLocaleString(),
         modified: modified?.toLocaleString()
     };
+}
+
+export function downloadHandlers(ids) {
+    return async function () {
+        if (!Array.isArray(ids)) {
+            ids = [ids];
+        }
+
+        const handlers = await handlersTable.where('id').anyOf(ids).toArray();
+        const toExport = handlers.reduce((result, h) => {
+            const { id } = h;
+
+            delete h.enabled;
+            delete h.id;
+            h.created = h.created.getTime();
+            h.modified = h.modified?.getTime();
+            result[id] = h;
+
+            return result;
+        }, {});
+
+        toExport.dateCreated = new Date().getTime();
+        toExport.itemsCount = handlers.length;
+
+        const exportStr = JSON.stringify(toExport);
+
+        saveAs(exportStr, `Handlers_${handlers.length}_${new Date().format('yyyy-MM-dd')}.dah`);
+    }
+}
+
+export function importHandlers(json) {
+    return async function (dispatch) {
+        const handlers = JSON.parse(json);
+
+        const { dateCreated, itemsCount, ...handlersMap } = handlers;
+        const handlerIds = Object.keys(handlersMap);
+
+        const existingHandlers = (await handlersTable.bulkGet(handlerIds))
+            .reduce((obj, h) => {
+                if (h) {
+                    const { id } = h;
+                    obj[id] = true;
+                }
+
+                return obj;
+            }, {});
+
+        const toImport = handlerIds.map(id => {
+            if (id.length < 30) {
+                delete handlersMap[id];
+                return null;
+            }
+
+            const { filters, actions } = handlers[id];
+
+            if (filters && !Array.isArray(filters)) {
+                delete handlersMap[id];
+                return null;
+            }
+
+            if (actions && !Array.isArray(actions)) {
+                delete handlersMap[id];
+                return null;
+            }
+
+            let { created, modified } = handlers[id];
+
+            delete handlers[id].created;
+            delete handlers[id].modified;
+
+            created = new Date(created);
+
+            if (modified) {
+                modified = new Date(modified);
+            }
+
+            const lastEdited = (modified || created).toLocaleString();
+
+            const { name, desc, hasError } = handlers[id];
+
+            const obj = { id, name, desc, lastEdited, hasError, exist: existingHandlers[id] };
+
+            return obj;
+        }).filter(Boolean);
+
+        dispatch(getObj(Handler.ImportHandler, { sampleImport: false, handlers: toImport, handlersMap, dateCreated, itemsCount }));
+    }
+}
+
+export function clearImports() {
+    return function (dispatch) {
+        dispatch(getObj(Handler.ClearImport));
+    }
+}
+
+export function importSelection(ids, handlers) {
+    return async function (dispatch) {
+        const toImport = ids.map(id => {
+            const handler = handlers[id];
+            handler.created = new Date();
+            handler.id = id;
+            return handler;
+        });
+
+        await handlersTable.bulkPut(toImport);
+        loadHandlersList()(dispatch);
+    }
 }

@@ -49,7 +49,7 @@ class BaseFilter extends PureComponent {
   valueChanged = (value) => this.triggerChange({ ...this.props.item, value });
 
   triggerChange(item) {
-    const { index, onChange } = this.props;
+    const { index, item: oldItem, onChange } = this.props;
 
     if (this.hasValidationErrors(item)) {
       item.hasError = true
@@ -58,7 +58,7 @@ class BaseFilter extends PureComponent {
       delete item.hasError;
     }
 
-    onChange(item, index);
+    onChange(item, index, oldItem);
   }
 
   hasValidationErrors = (item) => !!this.getErrorMessages(item);

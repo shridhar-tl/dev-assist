@@ -3,7 +3,9 @@ export const Handler = {
     SetActiveHandlers: 'HANDLERS.SET_ACTIVE_HANDLERS',
     Save: 'HANDLERS.SAVE',
     UpdateHandler: 'HANDLERS.UPDATE_HANDLER',
-    Delete: 'HANDLERS.DELETE'
+    Delete: 'HANDLERS.DELETE',
+    ImportHandler: 'HANDLERS.IMPORT',
+    ClearImport: 'HANDLERS.IMPORT.CLEAR'
 };
 
 export const Settings = {

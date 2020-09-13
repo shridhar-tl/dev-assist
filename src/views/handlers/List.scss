@@ -11,7 +11,7 @@
         cursor: pointer;
     }
 
-    .handler-name:hover {
+    .handler-name.clickable:hover {
         color: #0388e5;
     }
 
@@ -27,5 +27,14 @@
         .handler-name {
             color: #fff;
         }
+    }
+}
+
+span.p-button.p-fileupload-choose {
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    .pi-plus:before {
+        content: "\e934";
     }
 }

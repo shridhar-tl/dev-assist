@@ -18,7 +18,7 @@ class FilterGroup extends BaseFilter {
     }
 
     onChange = (filters) => {
-        let { item, onChange, index } = this.props;
+        let { item } = this.props;
         const hasError = filters.length < 2 || filters.some(({ hasError }) => hasError)
 
         item = { ...item, filters, hasError };
@@ -27,7 +27,7 @@ class FilterGroup extends BaseFilter {
             delete item.hasError;
         }
 
-        onChange(item, index);
+        this.triggerChange(item);
     }
 
     getErrorMessages() {
