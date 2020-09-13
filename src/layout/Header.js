@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import { Menubar } from 'primereact/menubar';
 import { InputSwitch } from 'primereact/inputswitch';
 import { Tooltip } from 'primereact/tooltip';
-import * as actions from '../store/actions/settings';
+import { loadSettings, enableExtension, disableExtension } from '../store/actions/settings';
+import { showQuickHandlers } from '../store/actions/handlers';
 import { Urls } from '../common/constants';
 
 const tooltipLeft = { position: 'left' };
+
+const actions = { loadSettings, enableExtension, disableExtension, showQuickHandlers };
 
 class Header extends PureComponent {
     menu = [
@@ -18,7 +21,8 @@ class Header extends PureComponent {
             label: 'Handlers', icon: 'pi pi-fw pi-globe',
             items: [
                 { label: 'View Handlers', icon: 'pi pi-fw pi-th-large', command: () => this.props.history.push('/handlers') },
-                { label: 'New Handler', icon: 'pi pi-fw pi-file', command: () => this.props.history.push('/handlers/create') }
+                { label: 'New Handler', icon: 'pi pi-fw pi-file', command: () => this.props.history.push('/handlers/create') },
+                { label: 'Quick Samples', icon: 'pi pi-fw pi-file', command: () => this.props.showQuickHandlers() },
             ],
         },
         {

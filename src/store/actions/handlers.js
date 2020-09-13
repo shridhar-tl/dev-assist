@@ -123,13 +123,20 @@ export function downloadHandlers(ids) {
 }
 
 export function importHandlers(json) {
-    return async function (dispatch) {
+    return function (dispatch) {
         const handlers = JSON.parse(json);
+        prepareImport(dispatch, handlers);
+    }
+}
 
-        const { dateCreated, itemsCount, ...handlersMap } = handlers;
-        const handlerIds = Object.keys(handlersMap);
+async function prepareImport(dispatch, handlers, sample) {
+    const { dateCreated, itemsCount, ...handlersMap } = handlers;
+    const handlerIds = Object.keys(handlersMap);
 
-        const existingHandlers = (await handlersTable.bulkGet(handlerIds))
+    let existingHandlers = {};
+
+    if (!sample) {
+        existingHandlers = (await handlersTable.bulkGet(handlerIds))
             .reduce((obj, h) => {
                 if (h) {
                     const { id } = h;
@@ -138,47 +145,47 @@ export function importHandlers(json) {
 
                 return obj;
             }, {});
-
-        const toImport = handlerIds.map(id => {
-            if (id.length < 30) {
-                delete handlersMap[id];
-                return null;
-            }
-
-            const { filters, actions } = handlers[id];
-
-            if (filters && !Array.isArray(filters)) {
-                delete handlersMap[id];
-                return null;
-            }
-
-            if (actions && !Array.isArray(actions)) {
-                delete handlersMap[id];
-                return null;
-            }
-
-            let { created, modified } = handlers[id];
-
-            delete handlers[id].created;
-            delete handlers[id].modified;
-
-            created = new Date(created);
-
-            if (modified) {
-                modified = new Date(modified);
-            }
-
-            const lastEdited = (modified || created).toLocaleString();
-
-            const { name, desc, hasError } = handlers[id];
-
-            const obj = { id, name, desc, lastEdited, hasError, exist: existingHandlers[id] };
-
-            return obj;
-        }).filter(Boolean);
-
-        dispatch(getObj(Handler.ImportHandler, { sampleImport: false, handlers: toImport, handlersMap, dateCreated, itemsCount }));
     }
+
+    const toImport = handlerIds.map(id => {
+        if (id.length < 30) {
+            delete handlersMap[id];
+            return null;
+        }
+
+        const { filters, actions } = handlers[id];
+
+        if (filters && !Array.isArray(filters)) {
+            delete handlersMap[id];
+            return null;
+        }
+
+        if (actions && !Array.isArray(actions)) {
+            delete handlersMap[id];
+            return null;
+        }
+
+        let { created, modified } = handlers[id];
+
+        delete handlers[id].created;
+        delete handlers[id].modified;
+
+        created = new Date(created);
+
+        if (modified) {
+            modified = new Date(modified);
+        }
+
+        const lastEdited = (modified || created).toLocaleString();
+
+        const { name, desc, hasError } = handlers[id];
+
+        const obj = { id, name, desc, lastEdited, hasError, exist: existingHandlers[id] };
+
+        return obj;
+    }).filter(Boolean);
+
+    dispatch(getObj(Handler.ImportHandler, { sampleImport: sample, handlers: toImport, handlersMap, dateCreated, itemsCount }));
 }
 
 export function clearImports() {
@@ -187,16 +194,25 @@ export function clearImports() {
     }
 }
 
-export function importSelection(ids, handlers) {
+export function importSelection(ids, handlers, createNew) {
     return async function (dispatch) {
         const toImport = ids.map(id => {
             const handler = handlers[id];
             handler.created = new Date();
-            handler.id = id;
+            handler.enabled = false;
+            handler.id = createNew ? UUID.generate() : id;
+
             return handler;
         });
 
         await handlersTable.bulkPut(toImport);
         loadHandlersList()(dispatch);
+    }
+}
+
+export function showQuickHandlers() {
+    return async function (dispatch) {
+        const handlers = await (await fetch('/sample-handlers.json')).json();
+        prepareImport(dispatch, handlers, true);
     }
 }
