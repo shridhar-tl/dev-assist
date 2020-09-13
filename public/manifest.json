@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Dev Assistant: Modify Request Url, Headers, Tabs, User agent, etc",
+    "name": "Dev Assistant: Modify Request, User Agent,etc",
     "short_name": "Dev Assist",
     "version": "0.5",
     "description": "Helps to modify / control http(s) requests, tabs, user agents etc by configuring various filters and actions.",

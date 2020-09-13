@@ -55,3 +55,8 @@
 .p-dialog-content {
     padding: 0 !important;
 }
+
+// To fix column alignment issue when contents are less in scrollable table
+.p-datatable-scrollable-body {
+    overflow-y: scroll;
+}
