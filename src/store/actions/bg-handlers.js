@@ -5,7 +5,7 @@ import { handlersTable } from '../database';
 
 export async function loadActiveHandlers(dispatch) {
     const listFromDB = await handlersTable.toArray()
-    const list = listFromDB.filter(h => h.enabled);
+    const list = listFromDB.filter(h => h.enabled && !!h.actions?.length);
 
     const handlersUsingHeaders = list.filter(checkIfHeadersUsed);
     let ids = handlersUsingHeaders.map(h => h.id);
@@ -29,8 +29,6 @@ export async function loadActiveHandlers(dispatch) {
 }
 
 function checkIfResponseActionsAdded({ actions }) {
-    if (!actions?.length) { return false; }
-
     return actions.some(({ id }) => id === ActionTypes.ModifyResponseHeader
         || id === ActionTypes.ModifyResponseCookies
         || id === ActionTypes.AddCustomJS
@@ -43,7 +41,7 @@ function checkIfHeadersUsed({ filters, actions }) {
         || f.id === FilterTypes.ReferrerUrl
         || (f.id === FilterTypes.FilterGroup && checkIfHeadersUsed(f)))
         ||
-        actions?.some(a => a.id === ActionTypes.ModifyHeader
+        actions.some(a => a.id === ActionTypes.ModifyHeader
             || a.id === ActionTypes.ModifyUserAgent
             || a.id === ActionTypes.ReplaceReferrer
             || a.id === ActionTypes.ModifyRequestCookie
@@ -52,9 +50,11 @@ function checkIfHeadersUsed({ filters, actions }) {
 }
 
 const allowedFilterForProxy = [
+    FilterTypes.RequestProtocol,
     FilterTypes.HostName,
-    FilterTypes.QueryParam,
+    FilterTypes.RequestPort,
     FilterTypes.Url,
+    FilterTypes.QueryParam,
     FilterTypes.TimeOfDay,
     FilterTypes.DayOfWeek
 ];
@@ -62,7 +62,7 @@ const allowedFilterForProxy = [
 function checkIfProxyOnlyHandler({ filters, actions }) {
     filters = filters || [];
 
-    return actions?.length === 1 && actions[0].id === ActionTypes.ApplyProxy
+    return actions.length === 1 && actions[0].id === ActionTypes.ApplyProxy
         &&
         filters.every(f => allowedFilterForProxy.includes(f.id) || (f.id === FilterTypes.FilterGroup && checkIfProxyOnlyHandler(f)));
 }

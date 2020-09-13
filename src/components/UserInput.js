@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Chips } from 'primereact/chips';
 
-export default class UserInput extends Component {
+export default class UserInput extends PureComponent {
   valueChanged = (e) => this.props.onChange(e.target.value);
 
   multiValueChanged = ({ value }) => this.props.onChange(value);

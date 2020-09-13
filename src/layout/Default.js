@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { Toast } from 'primereact/toast';
 import Header from './Header';
 import Content from './Content';

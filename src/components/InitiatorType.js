@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 
 export const COMMON_REQUEST_INITIATORS = [
@@ -17,7 +17,7 @@ export const COMMON_REQUEST_INITIATORS = [
   { label: 'Other', value: 'other' }
 ];
 
-export default class InitiatorType extends Component {
+export default class InitiatorType extends PureComponent {
   selectionChanged = ({ value }) => this.props.onChange(value ? value : null);
 
   render() {

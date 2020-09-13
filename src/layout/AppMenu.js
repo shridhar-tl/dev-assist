@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import menus from './_nav';
 
-class AppSubmenu extends Component {
+class AppSubmenu extends PureComponent {
 
     static defaultProps = {
         className: null,
@@ -102,7 +102,7 @@ class AppSubmenu extends Component {
     }
 }
 
-export class AppMenu extends Component {
+export class AppMenu extends PureComponent {
 
     static defaultProps = {
         model: null,

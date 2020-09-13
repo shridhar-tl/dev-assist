@@ -1,7 +1,11 @@
 export const FilterTypes = {
     FilterGroup: 'f_grp',
     Header: 'hdr',
+    RequestMethod: 'rq_method',
     RequestType: 'rq_type',
+    RequestOrigin: 'rq_origin',
+    RequestProtocol: 'rq_protocol',
+    RequestPort: 'rq_port',
     HostName: 'hostname',
     Initiator: 'initiator',
     Url: 'url',

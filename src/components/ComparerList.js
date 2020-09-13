@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
-import { Dropdown } from 'primereact/components/dropdown/Dropdown';
+import React, { PureComponent } from 'react';
+import { Dropdown } from 'primereact/dropdown';
 
 const COMMON_COMPARERS = [
   { label: 'is equal to', value: '===' },
   { label: 'is not equal to', value: '!==' },
-  { label: 'contains', value: '%' },
-  { label: 'does not contain', value: '!%' },
+  { label: 'contains', value: '%', allowedTo: ['string'] },
+  { label: 'does not contain', value: '!%', allowedTo: ['string'] },
   //{ label: 'is greater than', value: '>', allowedTo: ['number', 'time'] },
   //{ label: 'is greater than or equals', value: '>=', allowedTo: ['number', 'time'] },
   //{ label: 'is lesser than', value: '<', allowedTo: ['number', 'time'] },
   //{ label: 'is lesser than or equals', value: '<=', allowedTo: ['number', 'time'] },
   { label: 'is any of', value: '[]', multiValue: true },
   { label: 'is none of', value: '[!]', multiValue: true },
-  { label: 'contains any of', value: '[%]', multiValue: true },
-  { label: 'contains none of', value: '[!%]', multiValue: true },
-  { label: 'starts with', value: '~_' },
-  { label: 'ends with', value: '_~' },
-  { label: 'starts with any of', value: '[~_]', multiValue: true },
-  { label: 'ends with any of', value: '[_~]', multiValue: true },
+  { label: 'contains any of', value: '[%]', multiValue: true, allowedTo: ['string'] },
+  { label: 'contains none of', value: '[!%]', multiValue: true, allowedTo: ['string'] },
+  { label: 'starts with', value: '~_', allowedTo: ['string'] },
+  { label: 'ends with', value: '_~', allowedTo: ['string'] },
+  { label: 'starts with any of', value: '[~_]', multiValue: true, allowedTo: ['string'] },
+  { label: 'ends with any of', value: '[_~]', multiValue: true, allowedTo: ['string'] },
   //{ label: 'is available', value: '~', allowedTo: [], noInput: true },
   //{ label: 'is not available', value: '!', allowedTo: [], noInput: true },
-  { label: 'has some value', value: '*', noInput: true },
-  { label: 'is empty', value: '-', noInput: true },
-  { label: 'matches (regex)', value: '$' },
-  { label: 'matches (wildcard)', value: '$*' }
+  { label: 'has some value', value: '*', noInput: true, allowedTo: ['string'] },
+  { label: 'is empty', value: '-', noInput: true, allowedTo: ['string'] },
+  { label: 'matches (regex)', value: '$', allowedTo: ['string'] },
+  { label: 'matches (wildcard)', value: '$*', allowedTo: ['string'] }
 ];
 
 export const comparerOptions = COMMON_COMPARERS.reduce((obj, cur) => {
@@ -41,10 +41,10 @@ export const comparerMap = COMMON_COMPARERS.reduce((obj, cur) => {
   return obj;
 }, {});
 
-export class ComparerList extends Component {
+export class ComparerList extends PureComponent {
   constructor(props) {
     super(props);
-    var fieldType = props.fieldType || 'string';
+    const fieldType = props.fieldType || 'string';
     this.list = COMMON_COMPARERS.filter(i => (i.allowedTo || []).length === 0 || i.allowedTo.includes(fieldType));
   }
 

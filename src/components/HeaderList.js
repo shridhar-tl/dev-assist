@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-//import { AutoComplete } from 'primereact/components/autocomplete/AutoComplete';
-import { Dropdown } from 'primereact/components/dropdown/Dropdown';
+import React, { PureComponent } from 'react';
+import { Dropdown } from 'primereact/dropdown';
 
 export const COMMON_HTTP_RESPONSE_HEADERS = [
   { value: 'Access-Control-Allow-Credentials' },
@@ -91,7 +90,7 @@ export const COMMON_HTTP_REQUEST_HEADERS = [
 
 COMMON_HTTP_REQUEST_HEADERS.forEach(h => h.label = h.value);
 
-export default class HeaderList extends Component {
+export default class HeaderList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

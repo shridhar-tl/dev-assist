@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 
-class AppProfile extends Component {
+class AppProfile extends PureComponent {
 
     constructor() {
         super();

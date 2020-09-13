@@ -59,10 +59,8 @@ export function getHostNameFromUrl(url) {
 export function getHostInfoFromUrl(url) {
     if (!url) { return {}; }
 
-    const urlObj = new URL(url);
-    const { host, hostname, port, protocol, pathname } = urlObj;
-
-    const result = { host, hostname, port, protocol, pathname };
+    const result = getBasicUrlInfo(url);
+    const { hostname } = result;
 
     const parts = hostname.split('.');
     const partLen = parts.length;
@@ -98,4 +96,21 @@ export function getHostInfoFromUrl(url) {
     }
 
     return result;
+}
+
+export function getBasicUrlInfo(url) {
+    const urlObj = new URL(url);
+    const { host, hostname, port, protocol, pathname } = urlObj;
+
+    return { host, hostname, port: port || getDefaultPort(protocol), protocol, pathname };
+}
+
+function getDefaultPort(protocol) {
+    switch (protocol) {
+        case 'http:': return '80';
+        case 'https:': return '443';
+        case 'ftp:': return '21';
+        case 'ftps:': return '990';
+        default: return '';
+    }
 }

@@ -18,12 +18,12 @@ class ScalarFieldFilter extends BaseFilter {
     }
 
     renderFilter() {
-        const { item: { comparer, value }, fieldName } = this.props;
+        const { item: { comparer, value }, fieldName, fieldType } = this.props;
         const { multiValue, noInput } = comparerOptions[comparer] || '';
 
         return (
             <div className="p-grid">
-                <ComparerList label={fieldName} value={comparer} onChange={this.comparerChanged} />
+                <ComparerList label={fieldName} fieldType={fieldType} value={comparer} onChange={this.comparerChanged} />
                 {!noInput && <UserInput size={8} value={value} onChange={this.valueChanged} multiValue={multiValue} />}
             </div>
         );
