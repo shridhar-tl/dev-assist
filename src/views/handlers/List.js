@@ -116,6 +116,7 @@ class List extends BasePage {
                 <Toolbar left={left} right={right} />
                 <DataTable value={list} selection={this.state.selectedItems}
                     emptyMessage={noHandlersMessage} globalFilter={globalFilter}
+                    scrollable scrollHeight="calc(100vh - 230px)"
                     onSelectionChange={this.onSelectionChange}>
                     <Column selectionMode="multiple" style={columnStyles.checkbox} />
                     <Column field="name" body={this.handlerNameTemplate} header="Handler"

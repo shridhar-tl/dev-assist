@@ -59,7 +59,7 @@ module.exports = function (webpackEnv) {
 
   let sourcemapConfig = (!!shouldUseSourceMap && 'source-map');
 
-  if (process.env.BABEL_ENV = 'development') {
+  if (process.env.BABEL_ENV === 'development') {
     sourcemapConfig = isDebugMode ? 'cheap-module-source-map' : 'inline-source-map';
   }
 

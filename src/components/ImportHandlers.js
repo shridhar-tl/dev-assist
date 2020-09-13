@@ -27,7 +27,8 @@ class ImportHandlers extends PureComponent {
         <>
             <span className="handler-name">
                 {row.name}
-                {!!row.exist && <span className="pi pi-exclamation-circle import-info warn" data-pr-tooltip="Handler already exists. Will be replaced if imported." />}
+                {!!row.exist && <span className="pi pi-exclamation-circle import-info warn"
+                    data-pr-tooltip="Handler already exists. Will be replaced if imported." />}
             </span>
             <span className="handler-desc">{row.desc}</span>
         </>
