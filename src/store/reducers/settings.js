@@ -1,6 +1,6 @@
 import { Settings as actions } from '../action-types';
 
-export default function (state = {}, { type, payload }) {
+export default function handleDispatch(state = {}, { type, payload }) {
     if (type === actions.UpdateSetting) {
 
         const { key, value } = payload;

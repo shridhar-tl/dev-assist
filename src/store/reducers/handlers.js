@@ -1,7 +1,7 @@
 import { Handler as actions } from '../action-types';
 import array from '../../common/js-extn';
 
-export default function (state = {}, { type, payload }) {
+export default function handleDispatch(state = {}, { type, payload }) {
     switch (type) {
         case actions.SetList: return { ...state, list: payload, importHandler: null };
         case actions.SetActiveHandlers: return { ...state, ...payload };

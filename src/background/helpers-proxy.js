@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import { getAssertScript } from "./helpers-common";
 import { FilterTypes } from "../common/constants";
 
