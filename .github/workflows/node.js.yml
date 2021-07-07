@@ -1,0 +1,42 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      CI: ""
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build
+    - name: Extract version
+      id: extract_version
+      uses: Saionaro/extract-package-version@v1.0.6
+      
+    - name: Save build package
+      uses: actions/upload-artifact@v2
+      with:
+        name: DA_Build_${{ steps.extract_version.outputs.version }}
+        path: build/
+        
+    - name: Save Sourcemap files
+      uses: actions/upload-artifact@v2
+      with:
+        name: DA_Sourcemap_${{ steps.extract_version.outputs.version }}
+        path: source_map/
