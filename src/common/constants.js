@@ -56,10 +56,11 @@ export const doubleDigitNonDomainNames = [
 export const tripleDigitNonDomainNames = ['net', 'org', 'gov', 'com', 'gen', 'jpn'];
 
 export const Urls = {
-    IssuesList: 'https://bitbucket.org/shridhartl/dev-assist/issues',
-    Documentation: 'https://chrome.google.com/webstore/detail/dev-assistant/omjocblcimogflgejnnadnmbfmngblmd?hl=en',
+    IssuesList: 'https://github.com/shridhar-tl/dev-assist/issues',
+    Documentation: 'https://github.com/shridhar-tl/dev-assist/blob/master/README.md',
     Donate: 'https://www.paypal.com/paypalme/shridhartl',
-    Sourcecode: 'https://github.com/shridhar-tl/dev-assist'
+    Sourcecode: 'https://github.com/shridhar-tl/dev-assist',
+    StoreURL: 'https://chrome.google.com/webstore/detail/dev-assistant/omjocblcimogflgejnnadnmbfmngblmd?utm_source=da'
 };
 
 export const MessageType = {

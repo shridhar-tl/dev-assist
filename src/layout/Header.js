@@ -32,10 +32,11 @@ class Header extends PureComponent {
             ],
         },
         {
-            label: 'Contribute', icon: 'fas fa-hands-helping', items: [
+            label: 'Support', icon: 'fas fa-hands-helping', items: [
                 { label: 'Donate', icon: 'fab fa-cc-paypal', command: () => window.open(Urls.Donate) },
                 { label: 'Report a bug', icon: 'fas fa-bug', command: () => window.open(Urls.IssuesList) },
-                //{ label: 'View source', icon: 'fas fa-code-branch', command: () => window.open(Urls.Sourcecode) }
+                { label: 'Rate', icon: 'fas fa-star', command: () => window.open(Urls.StoreURL) },
+                { label: 'View source', icon: 'fas fa-code-branch', command: () => window.open(Urls.Sourcecode) }
             ]
         },
         {

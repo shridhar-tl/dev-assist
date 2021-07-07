@@ -23,7 +23,7 @@ export const idbInfoMessage = (<div className="usage-info">
     </ol>
     <br /><br />
     <strong>How to use SQL for filtering records?</strong><br />
-    Though document storage is convenient to store unstructured data like JSON, it is still more convenient to use SQL language to query the data.<br />
+    Though IndexedDB storage is convenient to store unstructured data like JSON, it is still more convenient to use SQL to query the data.<br />
     Hence Dev Assistant provides you with an option to query and preview the data stored in IndexedDB either as table or as JSON tree itself.<br />
     <ol>
         <li>To query the data, follow the steps mentioned above untill you select a Database or a Table.</li>

@@ -42,7 +42,7 @@ class QueryEditor extends PureComponent {
     }
 
     simplifyAST = (ast) => {
-        const { selectItems, from, where, groupBy, limit, orderBy } = ast;
+        const { selectItems, from, where, limit, orderBy } = ast;
 
         const tableName = from.value[0].value.value.value;
 
