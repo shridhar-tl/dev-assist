@@ -88,7 +88,7 @@
   "scripts": {
     "start-old": "node scripts/start.js",
     "start": "node scripts/build.js",
-    "build": "node scripts/build.js",
+    "build": "node scripts/build.js PROD",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
