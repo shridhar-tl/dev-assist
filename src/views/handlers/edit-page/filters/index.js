@@ -96,6 +96,12 @@ export const filtersList = [
     },
     {
         type: DRAG_TYPE_FILTER,
+        id: FilterTypes.QueryParam,
+        text: 'Query param filter',
+        itemType: QueryParamFilter
+    },
+    {
+        type: DRAG_TYPE_FILTER,
         id: FilterTypes.Header,
         text: 'Header filter',
         itemType: HeaderFilter
@@ -108,12 +114,6 @@ export const filtersList = [
         params: {
             fieldName: 'Referrer url'
         }
-    },
-    {
-        type: DRAG_TYPE_FILTER,
-        id: FilterTypes.QueryParam,
-        text: 'Query param filter',
-        itemType: QueryParamFilter
     },
     {
         type: DRAG_TYPE_FILTER,

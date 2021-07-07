@@ -12,7 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
-// Modified: const ManifestPlugin = require('webpack-manifest-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -95,7 +95,7 @@ module.exports = function (webpackEnv) {
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
-  const shouldUseReactRefresh = env.raw.FAST_REFRESH;
+  const shouldUseReactRefresh = false; // Modified: env.raw.FAST_REFRESH;
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -204,7 +204,8 @@ module.exports = function (webpackEnv) {
     entry: {
       index: !isDebugMode ? paths.appIndexJs : [require.resolve('react-dev-utils/webpackHotDevClient'), paths.appIndexJs],
       menu: paths.menuJs,
-      background: paths.backgroundJs
+      background: paths.backgroundJs,
+      'cscript-chrome': paths.chromeContentScript
     },
     output: {
       // The build folder.
@@ -315,6 +316,12 @@ module.exports = function (webpackEnv) {
       splitChunks: {
         chunks: 'all',
         name: false, // Modified: isEnvDevelopment,
+        cacheGroups: {
+          shared: {
+            test: /[\\/]node_modules[\\/](dexie|moment)[\\/]/,
+            name: "shared"
+          }
+        }
       },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
@@ -627,7 +634,7 @@ module.exports = function (webpackEnv) {
       // Otherwise React will be compiled in the very slow development mode.
       new webpack.DefinePlugin(env.stringified),
       // This is necessary to emit hot updates (CSS and Fast Refresh):
-      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+      // Modified: isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       // Experimental hot reloading for React .
       // https://github.com/facebook/react/tree/master/packages/react-refresh
       isEnvDevelopment &&
@@ -666,25 +673,19 @@ module.exports = function (webpackEnv) {
       //   `index.html`
       // - "entrypoints" key: Array of files which are included in `index.html`,
       //   can be used to reconstruct the HTML if necessary
-      /* Modified:
+      // Modified:
       new ManifestPlugin({
-        fileName: 'asset-manifest.json',
+        fileName: 'entry-manifest.json',
         publicPath: paths.publicUrlOrPath,
         generate: (seed, files, entrypoints) => {
-          const manifestFiles = files.reduce((manifest, file) => {
-            manifest[file.name] = file.path;
-            return manifest;
-          }, seed);
-          const entrypointFiles = entrypoints.main.filter(
-            fileName => !fileName.endsWith('.map')
-          );
-
-          return {
-            files: manifestFiles,
-            entrypoints: entrypointFiles,
-          };
+          return Object.keys(entrypoints).reduce((res, key) => {
+            if (key.startsWith('cscript-')) {
+              res[key] = entrypoints[key].filter(fileName => !fileName.endsWith('.map'));
+            }
+            return res;
+          }, {});
         },
-      }),*/
+      }),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.

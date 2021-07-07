@@ -1,5 +1,5 @@
 import array from "../../../../common/js-extn";
-import { ActionTypes } from "../../../../common/constants";
+import { ActionTypes, FilterTypes } from "../../../../common/constants";
 import CustomScriptAction from "./CustomScriptAction";
 import ModifyItems from "./ModifyItems";
 import NoValuedAction from "./NoValuedAction";
@@ -15,22 +15,27 @@ export const actionList = [
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.BlockRequest, text: 'Block request',
         itemType: NoValuedAction, group: 'Modify Request', params: { infoText: 'Blocks this request' },
-        actionsAllowed: false,
-        //filtersAllowed: [FilterTypes.Header, FilterTypes.RequestType]
+        actions: {
+            [ActionTypes.CloseTab]: true
+        }
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.Redirectrequest, text: 'Redirect request',
         itemType: UrlReplaceAction, group: 'Modify Request', params: { infoText: 'Redirect the request to given url' },
-        actionsAllowed: false
-    },
-    {
-        type: DRAG_TYPE_ACTION, id: ActionTypes.ReplaceReferrer, text: 'Replace referrer url',
-        itemType: UrlReplaceAction, group: 'Modify Request'
+        actions: {
+            [ActionTypes.ModifyQueryParam]: true
+        }
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyQueryParam, text: 'Modify query param',
         itemType: ModifyItems, group: 'Modify Request',
-        actionsAllowed: false
+        actions: {
+            [ActionTypes.CloseTab]: true
+        }
+    },
+    {
+        type: DRAG_TYPE_ACTION, id: ActionTypes.ReplaceReferrer, text: 'Replace referrer url',
+        itemType: UrlReplaceAction, group: 'Modify Request'
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.ModifyHeader, text: 'Modify request header',
@@ -69,12 +74,20 @@ export const actionList = [
     },
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.CloseTab, text: 'Close tab',
-        itemType: NoValuedAction, group: 'Tab Actions', params: { infoText: 'Close the tab from where this request was initiated' }
+        itemType: NoValuedAction, group: 'Tab Actions',
+        params: { infoText: 'Close the tab from where this request was initiated' }
     },
 
     {
         type: DRAG_TYPE_ACTION, id: ActionTypes.ApplyProxy, text: 'Apply proxy',
-        itemType: ProxyAction, group: 'Other actions'
+        itemType: ProxyAction, group: 'Other actions',
+        actions: {
+            [ActionTypes.CloseTab]: false
+        },
+        filters: {
+            [FilterTypes.Header]: false,
+            [FilterTypes.ReferrerUrl]: false
+        }
     },
     /*{
         type: DRAG_TYPE_ACTION, id: ActionTypes.ShowNoti, text: 'Show notification',

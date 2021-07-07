@@ -228,6 +228,9 @@ function handleCompilationSuccess({ stats, previousFileSizes, warnings }) {
   );
   console.log();
 
+  console.log('Build completed at: ' + new Date().toString()); // Modified:
+
+  /* Modified: This info is not necessary
   const appPackage = require(paths.appPackageJson);
   const publicUrl = paths.publicUrlOrPath;
   const publicPath = config.output.publicPath;
@@ -238,7 +241,7 @@ function handleCompilationSuccess({ stats, previousFileSizes, warnings }) {
     publicPath,
     buildFolder,
     useYarn
-  );
+  );*/
 };
 
 function handleCompilationError(err) {

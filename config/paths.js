@@ -61,6 +61,7 @@ module.exports = {
   menuHtml: resolveApp('public/menu.html'),
   appIndexJs: resolveModule(resolveApp, 'src/index'),
   backgroundJs: resolveModule(resolveApp, 'src/background/chrome'),
+  chromeContentScript: resolveModule(resolveApp, 'src/content-scripts/chrome'),
   menuJs: resolveModule(resolveApp, 'src/common/menu'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),

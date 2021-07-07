@@ -61,3 +61,10 @@ export const Urls = {
     Donate: 'https://www.paypal.com/paypalme/shridhartl',
     Sourcecode: 'https://github.com/shridhar-tl/dev-assist'
 };
+
+export const MessageType = {
+    Check: 'CHECK',
+    ListIndexedDB: 'LIDB',
+    ListIndexDBData: 'LIDBD',
+    SaveIndexDBData: 'SIDD'
+}

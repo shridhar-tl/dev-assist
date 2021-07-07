@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Route } from 'react-router-dom';
 import List from '../views/handlers/List';
 import Edit from '../views/handlers/edit-page/Edit';
+import IndexedDB from '../views/storage/IndexedDB';
 import { ImportHandlers } from '../components';
 
 class Content extends PureComponent {
@@ -12,6 +13,7 @@ class Content extends PureComponent {
                 <Route path="/handlers" exact component={List} />
                 <Route path="/handlers/create" exact component={Edit} />
                 <Route path="/handlers/edit/:id" exact component={Edit} />
+                <Route path="/storage/idb" exact component={IndexedDB} />
                 {/*<Route path="/forms" component={FormsDemo} />
                 <Route path="/sample" component={SampleDemo} />
                 <Route path="/data" component={DataDemo} />

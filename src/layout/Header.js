@@ -26,6 +26,12 @@ class Header extends PureComponent {
             ],
         },
         {
+            label: 'Storage', icon: 'fa fa-database',
+            items: [
+                { label: 'IndexedDB', icon: 'fa fa-file', command: () => this.props.history.push('/storage/idb') }
+            ],
+        },
+        {
             label: 'Contribute', icon: 'fas fa-hands-helping', items: [
                 { label: 'Donate', icon: 'fab fa-cc-paypal', command: () => window.open(Urls.Donate) },
                 { label: 'Report a bug', icon: 'fas fa-bug', command: () => window.open(Urls.IssuesList) },

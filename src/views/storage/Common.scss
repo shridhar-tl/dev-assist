@@ -1,0 +1,50 @@
+.page-storage {
+    .sql-query-editor {
+        min-width: 100%;
+        min-height: 100%;
+    }
+
+    .p-inline-message {
+        width:100%;
+
+        .p-inline-message-text { width: 97%; }
+    }
+
+    .tree-container {
+        height:100%;
+        width: 100%;
+        max-height: calc(100vh - 280px);
+        overflow: auto;
+    }
+
+    tr.data-modified {
+        background-color: rgb(255, 229, 236) !important;
+    }
+
+    .usage-info {
+        padding: 15px 10px;
+        overflow-y: auto;
+    }
+}
+
+.page-storage.idb {
+    .col-key {
+        width: 300px;
+        font-family: monospace;
+        font-size: 11.2px;
+    }
+
+    .col-value {
+        .je-object-editor {
+            width: 100%;
+        }
+    }
+
+    .col-dynamic-value {
+        width: 450px;
+
+        .je-object-editor {
+            width: 100%;
+        }
+    }
+}

@@ -43,7 +43,9 @@
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
+    "js-sql-parser": "^1.4.1",
     "mini-css-extract-plugin": "0.11.3",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
@@ -66,6 +68,7 @@
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
     "react-transition-group": "^4.4.2",
+    "reactjs-json-editor": "^0.1.2",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "resolve": "1.18.1",
@@ -83,9 +86,9 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start-old": "node scripts/start.js",
+    "start": "node scripts/build.js",
     "build": "node scripts/build.js",
-    "build-debug": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
