@@ -337,7 +337,8 @@ function createNewCookieObj(url, key, value) {
 }
 
 function setCookie(name, value, cookies, actionType) {
-    const keyMap = Object.keys(cookies).map(c => ({ [c.toUpperCase()]: c }));
+    const keyMap = {};
+    Object.keys(cookies).forEach(c => keyMap[c.toUpperCase()] = c);
 
     const nameToUpper = name.toUpperCase();
 
