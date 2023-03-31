@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Dev Assistant: Modify Request, Storage, User Agent,etc",
+    "name": "Dev Assistant: Modify Request, User Agent,etc",
     "short_name": "Dev Assist",
-    "version": "0.6",
+    "version": "0.7",
     "description": "Helps to manage storage and modify / control http(s) requests, tabs, user agents etc by configuring various filters and actions.",
     "icons": {
         "128": "icon_128.png",
